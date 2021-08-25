@@ -1,0 +1,10 @@
+.file-uploader [class*="-upload-select-picture-card"] {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.file-uploader span[class*="ant-upload"] {
+  width: 100%;
+  max-width: 100%;
+}
