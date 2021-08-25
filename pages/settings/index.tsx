@@ -1,17 +1,21 @@
+import { Heading } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { Container } from '~/components/layouts/container';
 import { Layout } from '~/components/layouts/root/layout';
-import { Header } from '~/components/pages/apps/courses/home/header';
-import { ListCourses } from '~/components/pages/apps/courses/home/list-courses';
+import { UserModel } from '~/services/@types/user';
 import { MeServiceRest } from '~/services/rest-api/services/me/me.service';
 import { appDesconnectedUrl } from '~/utils/constants';
 
-export default function Home({ courses, ...props }) {
+interface Props {
+  readonly user: UserModel;
+}
+
+export default function Home({ user, ...props }: Props) {
   return (
     <Layout>
       <Container flexDir="column" paddingY={8}>
-        <Header title="Cursos" hideActions />
-        <ListCourses courses={courses} />
+        <Heading>Olá, {user?.fullname}.</Heading>
+        Configurações do Usuário
       </Container>
     </Layout>
   );
@@ -28,10 +32,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const courses = await meService.courses();
+  const user = await meService.load();
   return {
     props: {
-      courses
+      user
     }
   };
 };
