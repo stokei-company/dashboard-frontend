@@ -3,7 +3,6 @@ import { Container } from '~/components/layouts/container';
 import { Layout } from '~/components/layouts/root/layout';
 import { Header } from '~/components/pages/apps/courses/home/header';
 import { ListCourses } from '~/components/pages/apps/courses/home/list-courses';
-import { CourseServiceRest } from '~/services/rest-api/services/course/course.service';
 import { MeServiceRest } from '~/services/rest-api/services/me/me.service';
 import { appDesconnectedUrl } from '~/utils/constants';
 

@@ -9,18 +9,20 @@ import {
   Icon,
   Stack,
   Text,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { useContext, useMemo, useRef } from "react";
-import { LogoutIcon, SettingIcon, UserIcon } from "~/components/icons";
-import { Link } from "~/components/layouts/layout/menu/link";
-import { UserAvatar } from "~/components/ui/user-avatar";
-import { AuthContext } from "~/contexts/auth";
-import { ACCOUNT_FRONTEND_URL, AUTH_FRONTEND_URL } from "~/environments";
+  useDisclosure
+} from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { useContext, useMemo, useRef } from 'react';
+import { LogoutIcon, SettingIcon, UserIcon } from '~/components/icons';
+import { Link } from '~/components/layouts/layout/menu/link';
+import { UserAvatar } from '~/components/ui/user-avatar';
+import { AuthContext } from '~/contexts/auth';
+import { AUTH_FRONTEND_URL } from '~/environments';
 
 interface Props {}
 
 export const UserBox: React.FC<Props> = ({ children, ...props }) => {
+  const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = useContext(AuthContext);
   const btnRef = useRef();
@@ -29,11 +31,11 @@ export const UserBox: React.FC<Props> = ({ children, ...props }) => {
     if (!user) {
       return;
     }
-    const [name, ...rest] = user.fullname.split(" ");
-    return name + " " + rest[rest.length - 1];
+    const [name, ...rest] = user.fullname.split(' ');
+    return name + ' ' + rest[rest.length - 1];
   }, [user]);
 
-  const redirect = (url) => (window.location.href = url);
+  const redirect = (url) => router.push(url);
 
   if (!user) {
     return <></>;
@@ -74,14 +76,14 @@ export const UserBox: React.FC<Props> = ({ children, ...props }) => {
               <Link
                 alignItems="flex-start"
                 icon={<Icon as={UserIcon} color="gray.600" />}
-                onClick={() => redirect(ACCOUNT_FRONTEND_URL)}
+                onClick={() => redirect('/settings')}
               >
                 Minha conta
               </Link>
               <Link
                 alignItems="flex-start"
                 icon={<Icon as={SettingIcon} color="gray.600" />}
-                onClick={() => redirect(ACCOUNT_FRONTEND_URL)}
+                onClick={() => redirect('/settings')}
               >
                 Configurações
               </Link>
@@ -93,7 +95,7 @@ export const UserBox: React.FC<Props> = ({ children, ...props }) => {
               <Link
                 alignItems="flex-start"
                 icon={<Icon as={LogoutIcon} color="gray.600" />}
-                onClick={() => redirect(AUTH_FRONTEND_URL + "/logout")}
+                onClick={() => redirect(AUTH_FRONTEND_URL + '/logout')}
               >
                 Sair
               </Link>

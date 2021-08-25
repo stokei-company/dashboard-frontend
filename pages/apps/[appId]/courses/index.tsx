@@ -1,4 +1,3 @@
-import { Flex } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { Layout } from '~/components/layouts/apps/layout';
 import { Container } from '~/components/layouts/container';
@@ -11,8 +10,8 @@ export default function Home({ courses, appId, ...props }) {
   return (
     <Layout>
       <Container paddingTop={10} paddingBottom={16}>
-        <Header appId={appId} title="Cursos" />
-        <ListCourses appId={appId} courses={courses} />
+        <Header title="Cursos" />
+        <ListCourses courses={courses} />
       </Container>
     </Layout>
   );
