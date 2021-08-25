@@ -1,0 +1,5 @@
+@import '~antd/dist/antd.css';
+
+.antd-img-crop-modal, .ant-modal-mask{
+    z-index: 2000;
+}
