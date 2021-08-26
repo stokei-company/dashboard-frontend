@@ -1,17 +1,24 @@
-import ImgCrop from "antd-img-crop";
-import React from "react";
-import { Image } from "../image";
-import { InputFile, InputFileProps } from "../input-file";
+import ImgCrop from 'antd-img-crop';
+import React from 'react';
+import { Image } from '../image';
+import { InputFile, InputFileProps } from '../input-file';
 
 interface Props extends InputFileProps {
   readonly aspectRatio?: number;
+  readonly rounded?: boolean;
 }
 
-export const InputFileImage: React.FC<Props> = ({ aspectRatio, ...props }) => {
+export const InputFileImage: React.FC<Props> = ({
+  aspectRatio,
+  rounded = false,
+  previewElement,
+  ...props
+}) => {
   return (
     <ImgCrop
       rotate
       aspect={aspectRatio}
+      shape={rounded ? 'round' : 'rect'}
       modalOk="Ok"
       modalCancel="Cancelar"
       modalTitle="Editar imagem"
@@ -20,14 +27,18 @@ export const InputFileImage: React.FC<Props> = ({ aspectRatio, ...props }) => {
     >
       <InputFile
         accept="image/png, image/jpg, image/jpeg"
-        previewElement={(fileUrl: string) => (
-          <Image
-            width="full"
-            src={fileUrl}
-            fallbackSrc="/no-image.png"
-            alt="previewImage"
-          />
-        )}
+        previewElement={(fileUrl: string) =>
+          previewElement ? (
+            previewElement(fileUrl)
+          ) : (
+            <Image
+              width="full"
+              src={fileUrl}
+              fallbackSrc="/no-image.png"
+              alt="previewImage"
+            />
+          )
+        }
         {...props}
       />
     </ImgCrop>

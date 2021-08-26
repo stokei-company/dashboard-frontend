@@ -1,9 +1,9 @@
-import { Box } from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
-import { Container } from "~/components/layouts/container";
-import { Layout } from "~/components/layouts/courses/layout";
-import { CourseServiceRest } from "~/services/rest-api/services/course/course.service";
-import { appDesconnectedUrl } from "~/utils/constants";
+import { Box } from '@chakra-ui/react';
+import { GetServerSideProps } from 'next';
+import { Container } from '~/components/layouts/container';
+import { Layout } from '~/components/layouts/courses/layout';
+import { CourseServiceRest } from '~/services/rest-api/services/course/course.service';
+import { desconnectedUrl } from '~/utils/constants';
 
 export default function Home({ courseId, appId, ...props }) {
   return (
@@ -29,20 +29,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!courseService.accessToken) {
     return {
       redirect: {
-        destination: appDesconnectedUrl(appId),
-        permanent: false,
-      },
+        destination: desconnectedUrl(appId),
+        permanent: false
+      }
     };
   }
 
   const courseId = context?.params?.courseId
-    ? context.params.courseId + ""
+    ? context.params.courseId + ''
     : null;
 
   return {
     props: {
       appId,
-      courseId,
-    },
+      courseId
+    }
   };
 };

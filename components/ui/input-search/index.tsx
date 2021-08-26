@@ -1,21 +1,26 @@
-import { Flex, FormLabel, Stack, Text } from "@chakra-ui/react";
-import { useDebouncedCallback } from "use-debounce";
-import React, { ChangeEvent, ReactNode, useRef } from "react";
-import { useCallback } from "react";
-import { useState } from "react";
-import { Input, InputProps } from "../input";
-import { ButtonClean } from "../button";
+import { Flex, FormLabel, Stack, Text } from '@chakra-ui/react';
+import React, {
+  ChangeEvent,
+  ReactNode,
+  useCallback,
+  useRef,
+  useState
+} from 'react';
+import { useDebouncedCallback } from 'use-debounce';
+import { Input, InputProps } from '../input';
 
 interface Props extends InputProps {
   readonly onSearch: (text: string) => Promise<any[]>;
   readonly onItemClick: (data: any) => void;
   readonly item: (data: any, index?: number, array?: any) => ReactNode;
   readonly noItems: ReactNode;
+  readonly hideCurrentItem?: boolean;
 }
 
 export const InputSearch: React.FC<Props> = ({
   item,
   noItems,
+  hideCurrentItem = false,
   onSearch,
   onItemClick,
   ...props
@@ -31,7 +36,7 @@ export const InputSearch: React.FC<Props> = ({
       setItems(response && response.length > 0 ? response : []);
       setOpen(true);
     },
-    800
+    500
   );
 
   const handleChange = useCallback(
@@ -48,13 +53,17 @@ export const InputSearch: React.FC<Props> = ({
       }
       setCurrentItem(item);
       setOpen(false);
+
+      if (inputRef.current) {
+        (inputRef.current as any).value = '';
+      }
     },
     [onItemClick]
   );
 
   return (
     <Flex direction="column" position="relative">
-      {currentItem ? (
+      {!hideCurrentItem && currentItem ? (
         <Flex width="full" flexDir="column" marginBottom={2}>
           {props?.label && <FormLabel margin={0}>{props?.label}</FormLabel>}
           <Stack width="full" direction="column">
@@ -79,7 +88,7 @@ export const InputSearch: React.FC<Props> = ({
           autoComplete="off"
           backgroundColor="white"
           _hover={{
-            borderColor: "green.600",
+            borderColor: 'green.600'
           }}
           focusBorderColor="green.600"
           borderRadius="sm"
@@ -109,10 +118,10 @@ export const InputSearch: React.FC<Props> = ({
               items.map((data, index, array) => (
                 <Flex
                   width="full"
-                  key={(data?.id || data?.key || index) + ""}
+                  key={(data?.id || data?.key || index) + ''}
                   cursor="pointer"
                   _hover={{
-                    opacity: 0.7,
+                    opacity: 0.7
                   }}
                   paddingX={3}
                   onClick={() => handleClickItem(data)}

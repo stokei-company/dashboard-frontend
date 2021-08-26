@@ -14,6 +14,7 @@ export interface MenuItemData {
 }
 
 export interface MenuContextValues {
+  readonly existsMenu: boolean;
   readonly options: MenuItemData[];
 }
 
@@ -29,7 +30,8 @@ export const MenuContextProvider: React.FC<Props> = ({ options, children }) => {
   return (
     <MenuContext.Provider
       value={{
-        options
+        options,
+        existsMenu: options?.length > 0
       }}
     >
       {children}

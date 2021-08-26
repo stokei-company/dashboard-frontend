@@ -1,10 +1,9 @@
-import React from "react";
+import React from 'react';
 import {
   Layout as LayoutDefault,
-  LayoutProps,
-} from "~/components/layouts/layout";
-import AppContextProvider, { AppContext } from "~/contexts/app";
-import Header from "../header";
+  LayoutProps
+} from '~/components/layouts/layout';
+import AppContextProvider, { AppContext } from '~/contexts/app';
 
 interface Props extends LayoutProps {}
 
@@ -22,19 +21,18 @@ export const Layout: React.FC<Props> = ({
             menuOptions={[
               {
                 href: baseUrl,
-                title: "Painel",
+                title: 'Painel'
               },
               {
-                href: baseUrl + "/courses",
-                title: "Cursos",
+                href: baseUrl + '/courses',
+                title: 'Cursos'
               },
               {
-                href: baseUrl + "/settings",
-                title: "Configurações",
-              },
+                href: baseUrl + '/settings',
+                title: 'Configurações'
+              }
             ]}
           >
-            <Header />
             <main>{children}</main>
           </LayoutDefault>
         )}

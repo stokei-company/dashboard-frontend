@@ -1,6 +1,6 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
-import { Container } from "~/components/layouts/container";
-import { Layout } from "~/components/layouts/layout";
+import { Flex, Heading, Text } from '@chakra-ui/react';
+import { Container } from '~/components/layouts/container';
+import { Layout } from '~/components/layouts/root/layout';
 
 export default function Home({ ...props }) {
   return (

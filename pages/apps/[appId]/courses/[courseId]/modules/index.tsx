@@ -7,7 +7,7 @@ import { Header } from '~/components/pages/apps/courses/modules/header';
 import { ListModules } from '~/components/pages/apps/courses/modules/list-modules';
 import { NoModule } from '~/components/pages/apps/courses/modules/no-module';
 import { CourseModuleServiceRest } from '~/services/rest-api/services/course-module/course-module.service';
-import { appDesconnectedUrl } from '~/utils/constants';
+import { desconnectedUrl } from '~/utils/constants';
 
 export default function Home({ modules, courseId, appId, ...props }) {
   const router = useRouter();
@@ -46,7 +46,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!accessToken) {
     return {
       redirect: {
-        destination: appDesconnectedUrl(appId),
+        destination: desconnectedUrl(appId),
         permanent: false
       }
     };

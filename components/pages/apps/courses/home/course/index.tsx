@@ -22,7 +22,7 @@ export const Course: React.FC<Props> = memo(({ course, appId }) => {
         <CourseAvatar name={course?.name} src={course?.imageUrl} size="lg" />
       }
       body={
-        course?.teachers && (
+        course?.teachers?.length > 0 && (
           <Flex width="full" flexDirection="column" paddingY={2}>
             <Text lineHeight="shorter" color="gray.500" marginBottom={1}>
               Professores

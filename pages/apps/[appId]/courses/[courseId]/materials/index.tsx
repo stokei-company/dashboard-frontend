@@ -5,7 +5,7 @@ import { Layout } from '~/components/layouts/courses/layout';
 import Header from '~/components/pages/apps/courses/materials/header';
 import ListMaterials from '~/components/pages/apps/courses/materials/list-materials';
 import { CourseMaterialServiceRest } from '~/services/rest-api/services/course-material/course-material.service';
-import { appDesconnectedUrl } from '~/utils/constants';
+import { desconnectedUrl } from '~/utils/constants';
 
 export default function Home({ materials, courseId, appId, ...props }) {
   return (
@@ -37,7 +37,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!accessToken) {
     return {
       redirect: {
-        destination: appDesconnectedUrl(appId),
+        destination: desconnectedUrl(appId),
         permanent: false
       }
     };

@@ -7,7 +7,7 @@ import { Header } from '~/components/pages/apps/courses/users/header';
 import { ListUsers } from '~/components/pages/apps/courses/users/list-users';
 import { NoUser } from '~/components/pages/apps/courses/users/no-users';
 import { CourseUserServiceRest } from '~/services/rest-api/services/course-user/course-user.service';
-import { appDesconnectedUrl } from '~/utils/constants';
+import { desconnectedUrl } from '~/utils/constants';
 
 export default function Home({ users, ...props }) {
   const router = useRouter();
@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!courseUserService.accessToken) {
     return {
       redirect: {
-        destination: appDesconnectedUrl(appId),
+        destination: desconnectedUrl(appId),
         permanent: false
       }
     };

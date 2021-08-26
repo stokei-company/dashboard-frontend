@@ -1,9 +1,9 @@
-import { Box } from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
-import { Layout } from "~/components/layouts/apps/layout";
-import { Container } from "~/components/layouts/container";
-import { AppServiceRest } from "~/services/rest-api/services/app/app.service";
-import { appDesconnectedUrl } from "~/utils/constants";
+import { Box } from '@chakra-ui/react';
+import { GetServerSideProps } from 'next';
+import { Layout } from '~/components/layouts/apps/layout';
+import { Container } from '~/components/layouts/container';
+import { AppServiceRest } from '~/services/rest-api/services/app/app.service';
+import { desconnectedUrl } from '~/utils/constants';
 
 export default function Home({ app, ...props }) {
   return (
@@ -28,9 +28,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!appService.accessToken) {
     return {
       redirect: {
-        destination: appDesconnectedUrl(appService.appId),
-        permanent: false,
-      },
+        destination: desconnectedUrl(appService.appId),
+        permanent: false
+      }
     };
   }
 
@@ -39,13 +39,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     if (app) {
       return {
         props: {
-          app,
-        },
+          app
+        }
       };
     }
   }
 
   return {
-    notFound: true,
+    notFound: true
   };
 };

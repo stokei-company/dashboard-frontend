@@ -1,10 +1,10 @@
-import { Heading } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
-import { Container } from '~/components/layouts/container';
-import { Layout } from '~/components/layouts/root/layout';
+import Router from 'next/router';
+import { FormUpdateAccountInfo } from '~/components/forms/form-update-account-info';
+import { Layout } from '~/components/layouts/settings/layout';
 import { UserModel } from '~/services/@types/user';
 import { MeServiceRest } from '~/services/rest-api/services/me/me.service';
-import { appDesconnectedUrl } from '~/utils/constants';
+import { desconnectedUrl } from '~/utils/constants';
 
 interface Props {
   readonly user: UserModel;
@@ -12,11 +12,8 @@ interface Props {
 
 export default function Home({ user, ...props }: Props) {
   return (
-    <Layout>
-      <Container flexDir="column" paddingY={8}>
-        <Heading>Olá, {user?.fullname}.</Heading>
-        Configurações do Usuário
-      </Container>
+    <Layout user={user}>
+      <FormUpdateAccountInfo user={user} onSuccess={() => Router.reload()} />
     </Layout>
   );
 }
@@ -26,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!meService.accessToken) {
     return {
       redirect: {
-        destination: appDesconnectedUrl(meService.appId),
+        destination: desconnectedUrl(meService.appId),
         permanent: false
       }
     };
