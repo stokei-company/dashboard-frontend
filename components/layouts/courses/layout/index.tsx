@@ -1,10 +1,21 @@
-import React from "react";
+import { Icon } from '@chakra-ui/react';
+import React from 'react';
+import {
+  AboutIcon,
+  DashboardIcon,
+  MaterialIcon,
+  PlanIcon,
+  SettingIcon,
+  SubscriptionIcon,
+  UserIcon,
+  VideoIcon
+} from '~/components/icons';
 import {
   Layout as LayoutDefault,
-  LayoutProps,
-} from "~/components/layouts/layout";
-import { CourseContext, CourseContextProvider } from "~/contexts/course";
-import Header from "../header";
+  LayoutProps
+} from '~/components/layouts/layout';
+import { CourseContext, CourseContextProvider } from '~/contexts/course';
+import Header from '../header';
 
 interface Props extends LayoutProps {}
 
@@ -22,32 +33,78 @@ export const Layout: React.FC<Props> = ({
             menuOptions={[
               {
                 href: baseUrl,
-                title: "Painel",
+                title: 'Painel',
+                icon: <Icon as={DashboardIcon} />
               },
               {
-                href: baseUrl + "/about",
-                title: "Sobre",
+                href: baseUrl + '/about',
+                icon: <Icon as={AboutIcon} />,
+                title: 'Sobre'
               },
               {
-                href: baseUrl + "/users",
-                title: "Alunos",
+                title: 'Assinaturas',
+                icon: <Icon as={SubscriptionIcon} />,
+                subitems: [
+                  {
+                    title: 'Todas',
+                    href: baseUrl + '/subscriptions'
+                  },
+                  {
+                    title: 'Ativas',
+                    href: baseUrl + '/subscriptions?status=available'
+                  },
+                  {
+                    title: 'Canceladas',
+                    href: baseUrl + '/subscriptions?status=canceled'
+                  },
+                  {
+                    title: 'Finalizadas',
+                    href: baseUrl + '/subscriptions?status=finished'
+                  },
+                  {
+                    title: 'Pendentes',
+                    href: baseUrl + '/subscriptions?status=pending'
+                  }
+                ]
               },
               {
-                href: baseUrl + "/materials",
-                title: "Materiais",
+                href: baseUrl + '/users',
+                icon: <Icon as={UserIcon} />,
+                title: 'Alunos'
               },
               {
-                href: baseUrl + "/modules",
-                title: "Videos",
+                href: baseUrl + '/materials',
+                icon: <Icon as={MaterialIcon} />,
+                title: 'Materiais'
               },
               {
-                href: baseUrl + "/plans",
-                title: "Planos",
+                href: baseUrl + '/modules',
+                icon: <Icon as={VideoIcon} />,
+                title: 'Videos'
               },
               {
-                href: baseUrl + "/settings",
-                title: "Configurações",
+                icon: <Icon as={PlanIcon} />,
+                title: 'Planos',
+                subitems: [
+                  {
+                    title: 'Todos',
+                    href: baseUrl + '/plans'
+                  },
+                  {
+                    title: 'Ativos',
+                    href: baseUrl + '/plans?active=true'
+                  },
+                  {
+                    title: 'Cancelados',
+                    href: baseUrl + '/plans?active=false'
+                  }
+                ]
               },
+              {
+                href: baseUrl + '/settings',
+                icon: <Icon as={SettingIcon} />,
+                title: 'Configurações'
+              }
             ]}
           >
             <Header />

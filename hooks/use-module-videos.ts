@@ -1,34 +1,37 @@
-import { useEffect } from "react";
-import { VideoModel } from "~/services/@types/video";
-import { CourseVideoServiceRest } from "~/services/rest-api/services/course-video/course-video.service";
-import { useRequest } from "./use-request";
+import { useEffect } from 'react';
+import { VideoModel } from '~/services/@types/video';
+import { CourseVideoServiceRest } from '~/services/rest-api/services/course-video/course-video.service';
+import { useRequest } from './use-request';
 
 export interface UseModuleVideosResponse {
-    readonly loading: boolean;
-    readonly videos: VideoModel[];
+  readonly loading: boolean;
+  readonly videos: VideoModel[];
 }
 
-export const useModuleVideos = ({ appId, moduleId }): UseModuleVideosResponse => {
-    const courseService = new CourseVideoServiceRest({
-        appId,
-        moduleId,
-    });
-    const { data, loading, submit } = useRequest({
-        submit: () => courseService.findAll()
-    });
+export const useModuleVideos = ({
+  appId,
+  moduleId
+}): UseModuleVideosResponse => {
+  const courseService = new CourseVideoServiceRest({
+    appId,
+    moduleId
+  });
+  const { data, loading, submit } = useRequest({
+    submit: () => courseService.findAll()
+  });
 
-    useEffect(() => {
-        (async () => {
-            try {
-                if (appId && moduleId) {
-                    await submit();
-                }
-            } catch (error) { }
-        })()
-    }, [appId, moduleId]);
+  useEffect(() => {
+    (async () => {
+      try {
+        if (moduleId) {
+          await submit();
+        }
+      } catch (error) {}
+    })();
+  }, [moduleId]);
 
-    return {
-        videos: data,
-        loading,
-    };
-}
+  return {
+    videos: data,
+    loading
+  };
+};

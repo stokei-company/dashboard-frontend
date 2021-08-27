@@ -5,7 +5,7 @@ import { Header } from '~/components/pages/subscriptions/header';
 import { ListSubscriptions } from '~/components/pages/subscriptions/list-subscriptions';
 import { SubscriptionModel } from '~/services/@types/subscription';
 import { MeServiceRest } from '~/services/rest-api/services/me/me.service';
-import { appDesconnectedUrl } from '~/utils/constants';
+import { desconnectedUrl } from '~/utils/constants';
 
 interface Props {
   readonly subscriptions: SubscriptionModel[];
@@ -27,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!meService.accessToken) {
     return {
       redirect: {
-        destination: appDesconnectedUrl(meService.appId),
+        destination: desconnectedUrl(meService.appId),
         permanent: false
       }
     };

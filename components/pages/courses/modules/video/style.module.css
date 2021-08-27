@@ -1,0 +1,8 @@
+.description * {
+  font-size: small !important;
+  font-weight: normal !important;
+}
+
+.card > div > div {
+  margin-bottom: 0 !important;
+}

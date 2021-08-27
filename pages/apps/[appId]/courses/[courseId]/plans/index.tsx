@@ -6,7 +6,7 @@ import { Layout } from '~/components/layouts/courses/layout';
 import { Header } from '~/components/pages/apps/courses/plans/header';
 import ListPlans from '~/components/pages/apps/courses/plans/list-plans';
 import { CourseSkuServiceRest } from '~/services/rest-api/services/course-sku/course-sku.service';
-import { appDesconnectedUrl } from '~/utils/constants';
+import { desconnectedUrl } from '~/utils/constants';
 
 export default function Home({ plans, appId, courseId, ...props }) {
   return (
@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!accessToken) {
     return {
       redirect: {
-        destination: appDesconnectedUrl(appId),
+        destination: desconnectedUrl(appId),
         permanent: false
       }
     };

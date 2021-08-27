@@ -1,9 +1,9 @@
-import { SimpleGrid } from "@chakra-ui/react";
-import { SubscriptionModel } from "~/services/@types/subscription";
-import { User } from "../user";
+import { SimpleGrid } from '@chakra-ui/react';
+import { UserModel } from '~/services/@types/user';
+import { User } from '../user';
 
 interface Props {
-  readonly users: SubscriptionModel[];
+  readonly users: UserModel[];
 }
 
 export const ListUsers: React.FC<Props> = ({ users }) => {

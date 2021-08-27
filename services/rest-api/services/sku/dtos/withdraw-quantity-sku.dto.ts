@@ -1,3 +1,3 @@
 export class WithdrawQuantitySkuDTO {
-    readonly quantity: number;
+  readonly quantity: number;
 }

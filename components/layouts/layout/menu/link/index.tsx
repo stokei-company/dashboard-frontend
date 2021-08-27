@@ -34,7 +34,7 @@ const Body: React.FC<Props> = ({ icon, children }) => {
 
 export const Link: React.FC<Props> = ({
   children,
-  href,
+  href = '',
   icon,
   isExternal,
   ...props

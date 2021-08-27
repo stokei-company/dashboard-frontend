@@ -1,5 +1,5 @@
-import { Flex, Stack } from "@chakra-ui/react";
-import React, { useMemo } from "react";
+import { Flex, Stack } from '@chakra-ui/react';
+import React, { useMemo } from 'react';
 
 export interface CardContentProps {
   readonly padding?: number | string;
@@ -19,7 +19,7 @@ export const CardContent: React.FC<CardContentProps> = ({
   paddingBottom,
   paddingLeft,
   paddingRight,
-  children,
+  children
 }) => {
   const stylePadding = useMemo(() => {
     return {
@@ -29,7 +29,7 @@ export const CardContent: React.FC<CardContentProps> = ({
       paddingTop,
       paddingBottom,
       paddingLeft,
-      paddingRight,
+      paddingRight
     };
   }, [
     padding,
@@ -38,15 +38,11 @@ export const CardContent: React.FC<CardContentProps> = ({
     paddingTop,
     paddingBottom,
     paddingLeft,
-    paddingRight,
+    paddingRight
   ]);
   return (
-    <Flex
-      flexDirection="column"
-      width="full"
-      {...stylePadding}
-    >
+    <Stack direction="column" spacing={3} width="full" {...stylePadding}>
       {children}
-    </Flex>
+    </Stack>
   );
 };

@@ -1,22 +1,44 @@
-import { Box } from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
-import { Layout } from "~/components/layouts/apps/layout";
-import { Container } from "~/components/layouts/container";
-import { AppServiceRest } from "~/services/rest-api/services/app/app.service";
-import { appDesconnectedUrl } from "~/utils/constants";
+import { SimpleGrid } from '@chakra-ui/react';
+import { GetServerSideProps } from 'next';
+import { Layout } from '~/components/layouts/apps/layout';
+import { Container } from '~/components/layouts/container';
+import { Card } from '~/components/ui/card';
+import { ChartBar } from '~/components/ui/charts/bar';
+import { ChartDoughnut } from '~/components/ui/charts/doughnut';
+import { ChartLine } from '~/components/ui/charts/line';
+import { ChartPie } from '~/components/ui/charts/pie';
+import { AppServiceRest } from '~/services/rest-api/services/app/app.service';
+import { desconnectedUrl } from '~/utils/constants';
+
+const data = [
+  {
+    label: 'Março',
+    value: 100
+  },
+  {
+    label: 'Abril',
+    value: 50
+  },
+  {
+    label: 'Maio',
+    value: 77
+  },
+  {
+    label: 'Junho',
+    value: 89
+  }
+];
 
 export default function Home({ app, ...props }) {
   return (
     <Layout>
-      <Container justifyContent="center" paddingTop={10} paddingBottom={16}>
-        <Box
-          width="full"
-          backgroundColor="white"
-          borderRadius="md"
-          padding={10}
-        >
-          Alguns gráficos muito tops!
-        </Box>
+      <Container justifyContent="center" paddingY={8}>
+        <SimpleGrid width="full" spacing={5} columns={[1, 1, 2, 2]}>
+          <Card body={<ChartBar title="Pedidos" data={data} />} />
+          <Card body={<ChartLine title="Pedidos" data={data} />} />
+          <Card body={<ChartDoughnut title="Pedidos" data={data} />} />
+          <Card body={<ChartPie title="Pedidos" data={data} />} />
+        </SimpleGrid>
       </Container>
     </Layout>
   );
@@ -28,9 +50,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!appService.accessToken) {
     return {
       redirect: {
-        destination: appDesconnectedUrl(appService.appId),
-        permanent: false,
-      },
+        destination: desconnectedUrl(appService.appId),
+        permanent: false
+      }
     };
   }
 
@@ -39,13 +61,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     if (app) {
       return {
         props: {
-          app,
-        },
+          app
+        }
       };
     }
   }
 
   return {
-    notFound: true,
+    notFound: true
   };
 };

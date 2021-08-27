@@ -1,5 +1,5 @@
-export interface CreateCourseMaterialDTO{
-    readonly name: string;
-    readonly description?: string;
-    readonly material?: any;
+export interface CreateCourseMaterialDTO {
+  readonly name: string;
+  readonly description?: string;
+  readonly material?: any;
 }

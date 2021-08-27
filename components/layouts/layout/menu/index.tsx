@@ -2,11 +2,12 @@ import {
   Flex,
   FlexProps,
   Icon,
-  Spacer,
+  Link as ChakraLink,
   Stack,
   Text,
   useDisclosure
 } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { useContext } from 'react';
 import { ReactNode } from 'react-markdown';
 import { ArrowDownIcon, ArrowUpIcon } from '~/components/icons';
@@ -26,7 +27,16 @@ export const Menu: React.FC<MenuProps> = ({ children, ...props }) => {
   return (
     <Flex width="full" flexDirection="column" backgroundColor="white">
       <Flex width="full" paddingX={5} paddingY={3}>
-        <Image src={logoUrl} height="35px" fallbackSrc="/logo.png" alt="logo" />
+        <NextLink href="/">
+          <ChakraLink>
+            <Image
+              src={logoUrl}
+              height="35px"
+              fallbackSrc="/logo.png"
+              alt="logo"
+            />
+          </ChakraLink>
+        </NextLink>
       </Flex>
       <Stack
         width="full"

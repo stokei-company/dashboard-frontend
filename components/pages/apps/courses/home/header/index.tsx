@@ -1,10 +1,8 @@
-import { Flex, Heading, Spacer, Stack, useDisclosure } from '@chakra-ui/react';
+import { Flex, Heading, Spacer, Stack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React from 'react';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { Button } from '~/components/ui/button';
 import { AppContext } from '~/contexts/app';
-import { AddCourse } from '../add-course';
 
 interface Props {
   readonly title: string;
@@ -12,9 +10,7 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ title, hideActions = false }) => {
-  const { app } = useContext(AppContext);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const firstField = React.useRef();
+  const { baseUrl } = useContext(AppContext);
   const router = useRouter();
 
   return (
@@ -25,14 +21,9 @@ export const Header: React.FC<Props> = ({ title, hideActions = false }) => {
       <Spacer />
       {!hideActions && (
         <Stack>
-          <AddCourse
-            firstField={firstField}
-            appId={app?.id}
-            isOpen={isOpen}
-            onClose={onClose}
-            onSuccess={() => router.reload()}
-          />
-          <Button onClick={() => onOpen()}>Adicionar Curso</Button>
+          <Button onClick={() => router.push(baseUrl + '/courses/add')}>
+            Adicionar Curso
+          </Button>
         </Stack>
       )}
     </Flex>

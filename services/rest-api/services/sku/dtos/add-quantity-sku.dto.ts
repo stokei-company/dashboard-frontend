@@ -1,3 +1,3 @@
 export class AddQuantitySkuDTO {
-    readonly quantity: number;
+  readonly quantity: number;
 }

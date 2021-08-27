@@ -4,18 +4,18 @@ import {
   Heading,
   Stack,
   Text,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import React, { memo, useEffect, useMemo } from "react";
-import { Card } from "~/components/ui/card";
-import { useRequest } from "~/hooks/use-request";
-import { useSkuPrices } from "~/hooks/use-sku-prices";
-import { SkuModel } from "~/services/@types/sku";
-import { CourseSkuServiceRest } from "~/services/rest-api/services/course-sku/course-sku.service";
-import { colors } from "~/styles/colors";
-import { convertToMoney } from "~/utils/convert-to-money";
-import { UpdatePlan } from "../update-plan";
+  useDisclosure
+} from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import React, { memo, useEffect, useMemo } from 'react';
+import { Card } from '~/components/ui/card';
+import { useRequest } from '~/hooks/use-request';
+import { useSkuPrices } from '~/hooks/use-sku-prices';
+import { SkuModel } from '~/services/@types/sku';
+import { CourseSkuServiceRest } from '~/services/rest-api/services/course-sku/course-sku.service';
+import { colors } from '~/styles/colors';
+import { convertToMoney } from '~/utils/convert-to-money';
+import { UpdatePlan } from '../update-plan';
 
 interface Props {
   readonly appId: string;
@@ -25,21 +25,21 @@ interface Props {
 
 const times = {
   day: {
-    singular: "dia",
-    plural: "dias",
+    singular: 'dia',
+    plural: 'dias'
   },
   week: {
-    singular: "semana",
-    plural: "semanas",
+    singular: 'semana',
+    plural: 'semanas'
   },
   month: {
-    singular: "mês",
-    plural: "meses",
+    singular: 'mês',
+    plural: 'meses'
   },
   year: {
-    singular: "ano",
-    plural: "anos",
-  },
+    singular: 'ano',
+    plural: 'anos'
+  }
 };
 
 export const Plan: React.FC<Props> = memo(({ plan, courseId, appId }) => {
@@ -48,18 +48,18 @@ export const Plan: React.FC<Props> = memo(({ plan, courseId, appId }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const courseSkuService = new CourseSkuServiceRest({
     appId,
-    courseId,
+    courseId
   });
   const { prices, loading: loadingPrices } = useSkuPrices({
     appId,
-    skuId: plan.id,
+    skuId: plan.id
   });
   const {
     loading: loadingRemove,
     data: dataRemove,
-    submit: remove,
+    submit: remove
   } = useRequest({
-    submit: () => courseSkuService.delete(plan?.id),
+    submit: () => courseSkuService.delete(plan?.id)
   });
 
   const recurring = useMemo(() => {
@@ -67,9 +67,12 @@ export const Plan: React.FC<Props> = memo(({ plan, courseId, appId }) => {
       singular: string;
       plural: string;
     } = times[plan.recurring.type] || times.day;
+    if (plan.type === 'permanent') {
+      return 'VITALÍCIO';
+    }
     const interval = plan.recurring.interval;
     return `${interval} ${interval === 1 ? time.singular : time.plural}`;
-  }, [plan.recurring]);
+  }, [plan]);
 
   useEffect(() => {
     if (dataRemove) {
@@ -85,23 +88,23 @@ export const Plan: React.FC<Props> = memo(({ plan, courseId, appId }) => {
             {plan.name}
           </Heading>
 
-          <Badge colorScheme={plan.active ? "green" : "red"}>
-            {plan.active ? "Ativo" : "Cancelado"}
+          <Badge colorScheme={plan.active ? 'green' : 'red'}>
+            {plan.active ? 'Ativo' : 'Cancelado'}
           </Badge>
         </Stack>
       }
       menu={[
         {
-          text: "Alterar",
-          onClick: () => onOpen(),
+          text: 'Alterar',
+          onClick: () => onOpen()
         },
         {
-          color: "red.500",
-          text: "Cancelar",
+          color: 'red.500',
+          text: 'Cancelar',
           loading: loadingRemove,
-          loadingText: "Cancelando...",
-          onClick: () => !loadingRemove && remove(),
-        },
+          loadingText: 'Cancelando...',
+          onClick: () => !loadingRemove && remove()
+        }
       ]}
       body={
         <>
@@ -113,11 +116,11 @@ export const Plan: React.FC<Props> = memo(({ plan, courseId, appId }) => {
             </Flex>
             <Flex>
               <Text>
-                <b>Estoque:</b>{" "}
-                {plan.inventory.type === "infinite" ? "Infinito" : "Finito"}
+                <b>Estoque:</b>{' '}
+                {plan.inventory.type === 'infinite' ? 'Infinito' : 'Finito'}
               </Text>
             </Flex>
-            {plan.inventory.type !== "infinite" && (
+            {plan.inventory.type !== 'infinite' && (
               <Flex>
                 <Text>
                   <b>Quantidade disponível:</b> {plan.inventory.quantity}

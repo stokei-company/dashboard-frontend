@@ -1,23 +1,16 @@
-import {
-  Badge,
-  Flex,
-  Heading,
-  Image,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import React, { memo, useContext, useEffect, useMemo } from "react";
-import { Card } from "~/components/ui/card";
-import { Markdown } from "~/components/ui/markdown";
-import { AppContext } from "~/contexts/app";
-import { useRequest } from "~/hooks/use-request";
-import { VideoModel } from "~/services/@types/video";
-import { CourseVideoServiceRest } from "~/services/rest-api/services/course-video/course-video.service";
-import { colors } from "~/styles/colors";
-import { UpdateVideo } from "../update-video";
-import styles from "./style.module.css";
-import { VideoView } from "./video-view";
+import { Badge, Flex, Heading, Image, useDisclosure } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import React, { memo, useContext, useEffect, useMemo } from 'react';
+import { Card } from '~/components/ui/card';
+import { Markdown } from '~/components/ui/markdown';
+import { AppContext } from '~/contexts/app';
+import { useRequest } from '~/hooks/use-request';
+import { VideoModel } from '~/services/@types/video';
+import { CourseVideoServiceRest } from '~/services/rest-api/services/course-video/course-video.service';
+import { colors } from '~/styles/colors';
+import { UpdateVideo } from '../update-video';
+import styles from './style.module.css';
+import { VideoView } from './video-view';
 
 interface Props {
   readonly moduleName: string;
@@ -26,25 +19,25 @@ interface Props {
 }
 const statusSchema = {
   pending: {
-    colorScheme: "orange",
-    text: "Pendente",
+    colorScheme: 'orange',
+    text: 'Pendente'
   },
   encoding: {
-    colorScheme: "blue",
-    text: "Convertendo",
+    colorScheme: 'blue',
+    text: 'Convertendo'
   },
   saving: {
-    colorScheme: "cyan",
-    text: "Salvando",
+    colorScheme: 'cyan',
+    text: 'Salvando'
   },
   available: {
-    colorScheme: "green",
-    text: "Ok",
+    colorScheme: 'green',
+    text: 'Ok'
   },
   finished: {
-    colorScheme: "red",
-    text: "Finalizado",
-  },
+    colorScheme: 'red',
+    text: 'Finalizado'
+  }
 };
 
 export const Video: React.FC<Props> = memo(
@@ -54,21 +47,21 @@ export const Video: React.FC<Props> = memo(
     const { app } = useContext(AppContext);
     const courseVideoService = new CourseVideoServiceRest({
       moduleId,
-      appId: app?.id,
+      appId: app?.id
     });
     const { isOpen, onOpen, onClose } = useDisclosure();
     const {
       isOpen: isOpenUpdateVideo,
       onOpen: onOpenUpdateVideo,
-      onClose: onCloseUpdateVideo,
+      onClose: onCloseUpdateVideo
     } = useDisclosure();
 
     const {
       loading: loadingRemove,
       data: dataRemove,
-      submit: removeVideo,
+      submit: removeVideo
     } = useRequest({
-      submit: () => courseVideoService.delete(video?.id),
+      submit: () => courseVideoService.delete(video?.id)
     });
 
     const status: {
@@ -91,7 +84,7 @@ export const Video: React.FC<Props> = memo(
         title={
           <Flex
             alignItems="center"
-            maxWidth={["130px", "130px", "full", "full"]}
+            maxWidth={['130px', '130px', 'full', 'full']}
           >
             <Heading
               width="full"
@@ -107,14 +100,14 @@ export const Video: React.FC<Props> = memo(
         subtitle={
           <Flex flexDirection="column">
             {video.description && (
-              <Flex alignItems="center" maxWidth="100px">
-                <Text
-                  fontSize="xs"
-                  isTruncated
-                  className={styles["description"]}
-                >
-                  <Markdown content={video?.description} />
-                </Text>
+              <Flex
+                className={styles['description']}
+                alignItems="center"
+                maxWidth="100px"
+                fontSize="xs"
+                isTruncated
+              >
+                <Markdown content={video?.description} />
               </Flex>
             )}
             <Flex>
@@ -131,25 +124,25 @@ export const Video: React.FC<Props> = memo(
         }
         menu={[
           {
-            text: "Visualizar",
-            onClick: () => onOpen(),
+            text: 'Visualizar',
+            onClick: () => onOpen()
           },
           {
-            text: "Alterar",
-            onClick: () => onOpenUpdateVideo(),
+            text: 'Alterar',
+            onClick: () => onOpenUpdateVideo()
           },
           {
-            text: "Remover",
-            loadingText: "Removendo...",
+            text: 'Remover',
+            loadingText: 'Removendo...',
             loading: loadingRemove,
-            color: "red.500",
-            onClick: () => !loadingRemove && removeVideo(),
-          },
+            color: 'red.500',
+            onClick: () => !loadingRemove && removeVideo()
+          }
         ]}
         avatar={
           <Flex alignItems="center" justifyContent="center">
             <Image
-              width={["100px", "100px", "150px", "150px"]}
+              width={['100px', '100px', '150px', '150px']}
               src={video.thumbnail}
               fallbackSrc="/no-thumbnail.png"
               alt="Thumbnail"
@@ -176,4 +169,4 @@ export const Video: React.FC<Props> = memo(
   }
 );
 
-Video.displayName = "Video";
+Video.displayName = 'Video';
