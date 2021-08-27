@@ -9,21 +9,21 @@ export const Layout: React.FC<Props> = ({ children }) => {
   return (
     <CourseContextProvider>
       <CourseContext.Consumer>
-        {({ baseUrl }) => (
+        {({ baseCourseUrl }) => (
           <BoxLayout
             menuOptions={[
               {
-                href: baseUrl,
+                href: baseCourseUrl,
                 title: 'Sobre',
                 icon: <Icon as={AboutIcon} />
               },
               {
-                href: baseUrl + '/modules',
+                href: baseCourseUrl + '/modules',
                 title: 'Videos',
                 icon: <Icon as={VideoIcon} />
               },
               {
-                href: baseUrl + '/materials',
+                href: baseCourseUrl + '/materials',
                 title: 'Materiais',
                 icon: <Icon as={MaterialIcon} />
               }

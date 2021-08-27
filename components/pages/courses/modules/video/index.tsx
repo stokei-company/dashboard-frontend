@@ -1,34 +1,34 @@
-import { Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
-import NextLink from "next/link";
-import React, { memo, useContext } from "react";
-import { Card } from "~/components/ui/card";
-import { Markdown } from "~/components/ui/markdown";
-import { CourseContext } from "~/contexts/course";
-import { VideoModel } from "~/services/@types/video";
-import { colors } from "~/styles/colors";
-import styles from "./style.module.css";
+import { Flex, Heading, Image, Link } from '@chakra-ui/react';
+import NextLink from 'next/link';
+import React, { memo, useContext } from 'react';
+import { Card } from '~/components/ui/card';
+import { Markdown } from '~/components/ui/markdown';
+import { CourseContext } from '~/contexts/course';
+import { VideoModel } from '~/services/@types/video';
+import { colors } from '~/styles/colors';
+import styles from './style.module.css';
 
 interface Props {
   readonly video: VideoModel;
 }
 
 export const Video: React.FC<Props> = memo(({ video }) => {
-  const { baseUrl } = useContext(CourseContext);
+  const { baseCourseUrl } = useContext(CourseContext);
   return (
-    <NextLink href={`${baseUrl}/videos/${video.id}`}>
+    <NextLink href={`${baseCourseUrl}/videos/${video.id}`}>
       <Link
         _hover={{
-          textDecoration: "none",
+          textDecoration: 'none'
         }}
         _active={{
-          textDecoration: "none",
+          textDecoration: 'none'
         }}
         _focus={{
-          textDecoration: "none",
+          textDecoration: 'none'
         }}
       >
         <Card
-          className={styles["card"]}
+          className={styles['card']}
           boxShadow="none"
           padding={0}
           backgroundColor="transparent"
@@ -45,7 +45,7 @@ export const Video: React.FC<Props> = memo(({ video }) => {
           title={
             <Flex
               alignItems="center"
-              maxWidth={["130px", "130px", "full", "full"]}
+              maxWidth={['130px', '130px', 'full', 'full']}
             >
               <Heading
                 width="full"
@@ -60,14 +60,14 @@ export const Video: React.FC<Props> = memo(({ video }) => {
           }
           subtitle={
             video.description && (
-              <Flex alignItems="center" maxWidth="100px">
-                <Text
-                  fontSize="xs"
-                  isTruncated
-                  className={styles["description"]}
-                >
-                  <Markdown content={video?.description} />
-                </Text>
+              <Flex
+                className={styles['description']}
+                alignItems="center"
+                maxWidth="100px"
+                fontSize="xs"
+                isTruncated
+              >
+                <Markdown content={video?.description} />
               </Flex>
             )
           }
@@ -77,4 +77,4 @@ export const Video: React.FC<Props> = memo(({ video }) => {
   );
 });
 
-Video.displayName = "Video";
+Video.displayName = 'Video';

@@ -13,34 +13,43 @@ import { AlertsContext } from '~/contexts/alerts';
 import { AuthContext } from '~/contexts/auth';
 import { CourseContext } from '~/contexts/course';
 import { UserModel } from '~/services/@types/user';
-import { CourseUserServiceRest } from '~/services/rest-api/services/course-user/course-user.service';
+import { CourseSubscriptionServiceRest } from '~/services/rest-api/services/course-subscription/course-subscription.service';
 import { UserServiceRest } from '~/services/rest-api/services/user/user.service';
 
 interface Props {
   readonly onSuccess: () => any;
 }
 
-export const FormAddCourseUser: React.FC<Props> = ({ onSuccess, ...props }) => {
+export const FormAddCourseSubscription: React.FC<Props> = ({
+  onSuccess,
+  ...props
+}) => {
   const { addAlert } = useContext(AlertsContext);
   const { app, course } = useContext(CourseContext);
   const { user } = useContext(AuthContext);
 
   const formik = useFormik({
-    initialValues: { interval: 0, userId: '', type: 'day' },
+    initialValues: {
+      recurringInterval: 0,
+      userId: '',
+      type: 'permanent',
+      recurringType: 'day'
+    },
     validationSchema: Yup.object({
-      interval: Yup.number().required('Obrigatório')
+      recurringInterval: Yup.number()
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const courseUserService = new CourseUserServiceRest({
+        const courseSubscriptionService = new CourseSubscriptionServiceRest({
           courseId: course?.id,
           appId: app?.id
         });
-        const data = await courseUserService.create({
+        const data = await courseSubscriptionService.create({
           userId: values.userId,
+          type: values.type,
           recurring: {
-            interval: values.interval,
-            type: values.type
+            interval: values.recurringInterval,
+            type: values.recurringType
           }
         });
         if (data) {
@@ -118,31 +127,53 @@ export const FormAddCourseUser: React.FC<Props> = ({ onSuccess, ...props }) => {
             )}
           />
 
-          <Input
-            id="interval"
-            name="interval"
-            type="number"
-            label="Intervalo de tempo"
-            placeholder="Intervalo de tempo"
-            borderColor={formik.errors.interval && 'red.400'}
-            errorMessage={formik.touched.interval && formik.errors.interval}
-            {...formik.getFieldProps('interval')}
-          />
-
           <Select
             id="type"
             name="type"
-            label="Tipo do intervalo"
-            placeholder="Tipo do intervalo"
+            label="Tipo da assinatura"
+            placeholder="Tipo da assinatura"
             borderColor={formik.errors.type && 'red.400'}
             errorMessage={formik.touched.type && formik.errors.type}
             {...formik.getFieldProps('type')}
           >
-            <option value="day">Dias</option>
-            <option value="week">Semanas</option>
-            <option value="month">Meses</option>
-            <option value="year">Anos</option>
+            <option value="permanent">Vitalício</option>
+            <option value="recurring">Recorrente</option>
           </Select>
+
+          {formik.values.type === 'recurring' && (
+            <>
+              <Input
+                id="recurringInterval"
+                name="recurringInterval"
+                type="number"
+                label="Intervalo de tempo"
+                placeholder="Intervalo de tempo"
+                borderColor={formik.errors.recurringInterval && 'red.400'}
+                errorMessage={
+                  formik.touched.recurringInterval &&
+                  formik.errors.recurringInterval
+                }
+                {...formik.getFieldProps('recurringInterval')}
+              />
+
+              <Select
+                id="recurringType"
+                name="recurringType"
+                label="Tipo do intervalo"
+                placeholder="Tipo do intervalo"
+                borderColor={formik.errors.recurringType && 'red.400'}
+                errorMessage={
+                  formik.touched.recurringType && formik.errors.recurringType
+                }
+                {...formik.getFieldProps('recurringType')}
+              >
+                <option value="day">Dias</option>
+                <option value="week">Semanas</option>
+                <option value="month">Meses</option>
+                <option value="year">Anos</option>
+              </Select>
+            </>
+          )}
 
           {formik.status && (
             <Text color={formik.status.ok ? 'green.500' : 'red.500'}>

@@ -33,7 +33,6 @@ export const FormAddCourse: React.FC<Props> = ({
   onSuccess,
   ...props
 }) => {
-  const [images, setImages] = useState<string[]>([]);
   const [teachers, setTeachers] = useState<TeacherData[]>([]);
   const { addAlert } = useContext(AlertsContext);
   const { user } = useContext(AuthContext);
@@ -96,18 +95,6 @@ export const FormAddCourse: React.FC<Props> = ({
       formik.setFieldValue('teachers', [user?.id]);
     }
   }, [user]);
-
-  const removeImage = useCallback((index: number) => {
-    setImages((list) => list.filter((_, i) => i !== index));
-    formik.setFieldValue(
-      'images',
-      formik.values.images.filter((_, i) => i !== index)
-    );
-  }, []);
-
-  const addImage = useCallback((image: string) => {
-    setImages((list) => [...list, image]);
-  }, []);
 
   const removeTeacher = useCallback((index: number) => {
     setTeachers((list) => list.filter((_, i) => i !== index));

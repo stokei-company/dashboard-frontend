@@ -1,4 +1,6 @@
+import { Stack } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
+import { Container } from '~/components/layouts/container';
 import { Body } from '~/components/pages/courses/about/body';
 import { Footer } from '~/components/pages/courses/about/footer';
 import { Header } from '~/components/pages/courses/about/header';
@@ -9,9 +11,13 @@ import { desconnectedUrl } from '~/utils/constants';
 export default function Home({ ...props }) {
   return (
     <Layout>
-      <Header />
-      <Body />
-      <Footer />
+      <Container paddingY={8}>
+        <Stack direction="column" spacing={5}>
+          <Header />
+          <Body />
+          <Footer />
+        </Stack>
+      </Container>
     </Layout>
   );
 }

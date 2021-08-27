@@ -53,6 +53,7 @@ export const Card: React.FC<Props> = ({
       {...props}
     >
       {headerImage && <CardImg image={headerImage} />}
+      {menu?.length > 0 && <CardMenu items={menu} />}
       <CardContent
         padding={padding}
         paddingX={paddingX}
@@ -62,7 +63,6 @@ export const Card: React.FC<Props> = ({
         paddingLeft={paddingLeft}
         paddingRight={paddingRight}
       >
-        {menu?.length > 0 && <CardMenu items={menu} />}
         {(avatar || avatarName || title || subtitle) && (
           <CardHeader
             avatar={avatar}

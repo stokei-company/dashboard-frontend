@@ -1,4 +1,12 @@
+import { Icon } from '@chakra-ui/react';
 import React from 'react';
+import {
+  AboutIcon,
+  CourseIcon,
+  DashboardIcon,
+  OrderIcon,
+  SettingIcon
+} from '~/components/icons';
 import {
   Layout as LayoutDefault,
   LayoutProps
@@ -21,15 +29,28 @@ export const Layout: React.FC<Props> = ({
             menuOptions={[
               {
                 href: baseUrl,
-                title: 'Painel'
+                title: 'Painel',
+                icon: <Icon as={DashboardIcon} />
+              },
+              {
+                href: baseUrl + '/about',
+                title: 'Sobre',
+                icon: <Icon as={AboutIcon} />
               },
               {
                 href: baseUrl + '/courses',
-                title: 'Cursos'
+                title: 'Cursos',
+                icon: <Icon as={CourseIcon} />
+              },
+              {
+                href: baseUrl + '/orders',
+                title: 'Pedidos',
+                icon: <Icon as={OrderIcon} />
               },
               {
                 href: baseUrl + '/settings',
-                title: 'Configurações'
+                title: 'Configurações',
+                icon: <Icon as={SettingIcon} />
               }
             ]}
           >

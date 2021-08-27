@@ -4,10 +4,10 @@ import {
   DrawerCloseButton,
   DrawerContent,
   DrawerOverlay,
-  DrawerHeader,
-} from "@chakra-ui/react";
-import React from "react";
-import { FormAddCourseUser } from "~/components/forms/form-add-course-user";
+  DrawerHeader
+} from '@chakra-ui/react';
+import React from 'react';
+import { FormAddCourseSubscription } from '~/components/forms/form-add-course-subscription';
 
 interface Props {
   readonly isOpen: boolean;
@@ -16,7 +16,7 @@ interface Props {
   readonly firstField: any;
 }
 
-export const AddCourseUser: React.FC<Props> = ({
+export const AddCourseSubscription: React.FC<Props> = ({
   isOpen,
   onClose,
   onSuccess,
@@ -34,9 +34,9 @@ export const AddCourseUser: React.FC<Props> = ({
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Adicionar aluno</DrawerHeader>
+        <DrawerHeader>Adicionar assinatura</DrawerHeader>
         <DrawerBody paddingTop={5}>
-          <FormAddCourseUser onSuccess={onSuccess} />
+          <FormAddCourseSubscription onSuccess={onSuccess} />
         </DrawerBody>
       </DrawerContent>
     </Drawer>

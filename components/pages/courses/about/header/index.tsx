@@ -1,9 +1,8 @@
-import { Stack, Flex, Text, Image } from "@chakra-ui/react";
-import React from "react";
-import { useContext } from "react";
-import { Card } from "~/components/ui/card";
-import { CourseAvatar } from "~/components/ui/course-avatar";
-import { CourseContext } from "~/contexts/course";
+import { Flex, Stack, Text } from '@chakra-ui/react';
+import React, { useContext } from 'react';
+import { Card } from '~/components/ui/card';
+import { CourseAvatar } from '~/components/ui/course-avatar';
+import { CourseContext } from '~/contexts/course';
 
 interface Props {}
 
@@ -12,7 +11,6 @@ export const Header: React.FC<Props> = (props) => {
   return (
     <Card
       width="full"
-      marginBottom={5}
       body={
         <Stack direction="row" align="center" spacing={4}>
           <Flex>

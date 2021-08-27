@@ -1,14 +1,14 @@
-import { Badge, Flex, Heading, Stack, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { memo, useContext, useEffect, useMemo } from "react";
-import { ButtonOutlined } from "~/components/ui/button";
-import { Card } from "~/components/ui/card";
-import { AlertsContext } from "~/contexts/alerts";
-import { AppContext } from "~/contexts/app";
-import { useStartSubscription } from "~/hooks/use-start-subscription";
-import { SubscriptionModel } from "~/services/@types/subscription";
-import { colors } from "~/styles/colors";
-import { differenceDate, formatDate } from "~/utils/format-date";
+import { Badge, Flex, Heading, Stack, Text } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { memo, useContext, useEffect, useMemo } from 'react';
+import { ButtonOutlined } from '~/components/ui/button';
+import { Card } from '~/components/ui/card';
+import { AlertsContext } from '~/contexts/alerts';
+import { AppContext } from '~/contexts/app';
+import { useStartSubscription } from '~/hooks/use-start-subscription';
+import { SubscriptionModel } from '~/services/@types/subscription';
+import { colors } from '~/styles/colors';
+import { differenceDate, formatDate } from '~/utils/format-date';
 
 interface Props {
   readonly subscription: SubscriptionModel;
@@ -16,21 +16,51 @@ interface Props {
 
 const times = {
   day: {
-    singular: "dia",
-    plural: "dias",
+    singular: 'dia',
+    plural: 'dias'
   },
   week: {
-    singular: "semana",
-    plural: "semanas",
+    singular: 'semana',
+    plural: 'semanas'
   },
   month: {
-    singular: "mês",
-    plural: "meses",
+    singular: 'mês',
+    plural: 'meses'
   },
   year: {
-    singular: "ano",
-    plural: "anos",
+    singular: 'ano',
+    plural: 'anos'
+  }
+};
+
+const statusObj = {
+  pending: {
+    colorScheme: 'orange',
+    text: 'Pendente'
   },
+  canceled: {
+    colorScheme: 'red',
+    text: 'Cancelado'
+  },
+  available: {
+    colorScheme: 'green',
+    text: 'Disponivel'
+  },
+  finished: {
+    colorScheme: 'blue',
+    text: 'Finalizado'
+  }
+};
+
+const typeObj = {
+  permanent: {
+    color: colors.primary.main,
+    text: 'VITALÍCIO'
+  },
+  recurring: {
+    color: 'teal',
+    text: 'RECORRENTE'
+  }
 };
 
 export const Subscription: React.FC<Props> = memo(({ subscription }) => {
@@ -42,24 +72,24 @@ export const Subscription: React.FC<Props> = memo(({ subscription }) => {
     loading: loadingStart,
     data: dataStart,
     error: errorStart,
-    submit: startSubscription,
+    submit: startSubscription
   } = useStartSubscription({
     subscriptionId: subscription?.id,
-    appId: app?.id,
+    appId: app?.id
   });
 
   useEffect(() => {
     try {
       if (dataStart) {
         addAlert({
-          text: "Iniciado com sucesso!",
-          status: "success",
+          text: 'Iniciado com sucesso!',
+          status: 'success'
         });
         router.reload();
       } else if (errorStart) {
         addAlert({
-          text: "Erro ao iniciar a assinatura!",
-          status: "error",
+          text: 'Erro ao iniciar a assinatura!',
+          status: 'error'
         });
       }
     } catch (error) {}
@@ -69,27 +99,15 @@ export const Subscription: React.FC<Props> = memo(({ subscription }) => {
     colorScheme: string;
     text: string;
   } = useMemo(() => {
-    const response = {
-      pending: {
-        colorScheme: "orange",
-        text: "Pendente",
-      },
-      canceled: {
-        colorScheme: "red",
-        text: "Cancelado",
-      },
-      available: {
-        colorScheme: "green",
-        text: "Disponivel",
-      },
-      finished: {
-        colorScheme: "blue",
-        text: "Finalizado",
-      },
-    };
-
-    return response[subscription.status] || response.pending;
+    return statusObj[subscription.status] || statusObj.pending;
   }, [subscription.status]);
+
+  const type: {
+    color: string;
+    text: string;
+  } = useMemo(() => {
+    return typeObj[subscription.type] || typeObj.permanent;
+  }, [subscription.type]);
 
   const timeFormatted = useMemo(() => {
     if (!subscription?.recurring) {
@@ -105,14 +123,14 @@ export const Subscription: React.FC<Props> = memo(({ subscription }) => {
 
   const startAtFormatted = useMemo(() => {
     if (!subscription.startAt) {
-      return "Não iniciado";
+      return 'Não iniciado';
     }
     return formatDate(subscription.startAt);
   }, [subscription.startAt]);
 
   const endAtFormatted = useMemo(() => {
     if (!subscription.endAt) {
-      return "Não iniciado";
+      return 'Não iniciado';
     }
     return formatDate(subscription.endAt);
   }, [subscription.endAt]);
@@ -133,6 +151,7 @@ export const Subscription: React.FC<Props> = memo(({ subscription }) => {
   return (
     <Card
       width="full"
+      overflow="hidden"
       title={
         <Flex width="full" flexDir="column">
           <Heading size="md" color={colors.primary.main} lineHeight="shorter">
@@ -154,22 +173,41 @@ export const Subscription: React.FC<Props> = memo(({ subscription }) => {
       }
       body={
         <Flex flexDir="column">
-          {subscription.status === "available" && daysToFinish && (
-            <Text fontSize="sm">
-              <b>Expira em:</b> {daysToFinish}
-            </Text>
-          )}
-          {timeFormatted && (
-            <Text fontSize="sm">
-              <b>Tempo total:</b> {timeFormatted}
-            </Text>
+          {subscription.type === 'permanent' ? (
+            <Badge
+              position="absolute"
+              top={4}
+              right={-7}
+              paddingY={1}
+              paddingX={7}
+              transform={'rotate(45deg)'}
+              color="white"
+              backgroundColor={type.color}
+            >
+              {type.text}
+            </Badge>
+          ) : (
+            <>
+              {subscription.status === 'available' && daysToFinish && (
+                <Text fontSize="sm">
+                  <b>Expira em:</b> {daysToFinish}
+                </Text>
+              )}
+              {timeFormatted && (
+                <Text fontSize="sm">
+                  <b>Tempo total:</b> {timeFormatted}
+                </Text>
+              )}
+            </>
           )}
           <Text fontSize="sm">
             <b>Inicio:</b> {startAtFormatted}
           </Text>
-          <Text fontSize="sm">
-            <b>Fim:</b> {endAtFormatted}
-          </Text>
+          {subscription.type !== 'permanent' && (
+            <Text fontSize="sm">
+              <b>Fim:</b> {endAtFormatted}
+            </Text>
+          )}
           {subscription.createdAt && (
             <Text fontSize="sm">
               <b>Adicionado:</b> {addedAtFormatted}
@@ -178,10 +216,10 @@ export const Subscription: React.FC<Props> = memo(({ subscription }) => {
         </Flex>
       }
       footer={
-        subscription?.status === "pending" && (
+        subscription?.status === 'pending' && (
           <Stack
             alignItems="center"
-            direction={["column-reverse", "column-reverse", "row", "row"]}
+            direction={['column-reverse', 'column-reverse', 'row', 'row']}
             spacing={5}
           >
             <ButtonOutlined
@@ -198,4 +236,4 @@ export const Subscription: React.FC<Props> = memo(({ subscription }) => {
   );
 });
 
-Subscription.displayName = "Subscription";
+Subscription.displayName = 'Subscription';

@@ -13,7 +13,7 @@ export const Header: React.FC<Props> = ({ title }) => {
   return (
     <Flex width="full" flexDir="column" marginBottom={5}>
       <Flex width="full" marginBottom={5}>
-        <BackLink href={baseUrl + '/courses'}>Cursos</BackLink>
+        <BackLink href={baseUrl + '/courses'} title="Cursos" />
       </Flex>
       <Heading size="xl" lineHeight="shorter">
         {title}

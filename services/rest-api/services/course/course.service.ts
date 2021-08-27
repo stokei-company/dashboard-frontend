@@ -1,4 +1,6 @@
 import { CourseModel } from '~/services/@types/course';
+import { SubscriptionModel } from '~/services/@types/subscription';
+import { FindAllPayload } from '~/services/interfaces/find-all.payload';
 import { BaseService, BaseServiceConfig } from '../base-service';
 import { CreateCourseDTO } from './dtos/create-course.dto';
 import { UpdateCourseDTO } from './dtos/update-course.dto';
@@ -59,6 +61,34 @@ export class CourseServiceRest extends BaseService {
     try {
       const response = await this.client.get<CourseModel[]>(`/courses`);
       if (response?.data && response?.data.length > 0) {
+        return response.data;
+      }
+    } catch (error) {}
+    return null;
+  }
+
+  async subscriptions(
+    courseId: string,
+    data?: {
+      limit?: string;
+      page?: string;
+      status?: string;
+      type?: string;
+      createdAt?: string;
+    }
+  ): Promise<FindAllPayload<SubscriptionModel>> {
+    try {
+      const dataParams = Object.entries(data || {});
+      let params = '';
+      if (dataParams.length > 0) {
+        params = dataParams
+          .map(([key, value]) => `${key}=${value || ''}`)
+          .join('&');
+      }
+      const response = await this.client.get<FindAllPayload<SubscriptionModel>>(
+        `/courses/${courseId}/subscriptions${params ? '?' + params : ''}`
+      );
+      if (response?.data) {
         return response.data;
       }
     } catch (error) {}

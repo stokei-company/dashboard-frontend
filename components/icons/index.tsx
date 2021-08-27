@@ -2,6 +2,7 @@ import {
   FaArrowLeft,
   FaBars,
   FaBell,
+  FaChartLine,
   FaChevronDown,
   FaChevronUp,
   FaCog,
@@ -16,8 +17,10 @@ import {
   FaHome,
   FaInfo,
   FaMapMarker,
+  FaMoneyBill,
   FaPlus,
   FaSignOutAlt,
+  FaStore,
   FaUser,
   FaVideo
 } from 'react-icons/fa';
@@ -39,6 +42,9 @@ export const VideoIcon = FaVideo;
 export const HomeIcon = FaHome;
 export const PlusIcon = FaPlus;
 export const SettingIcon = FaCog;
+export const PlanIcon = FaMoneyBill;
+export const DashboardIcon = FaChartLine;
+export const OrderIcon = FaStore;
 export const SubscriptionIcon = FaFileSignature;
 export const AppIcon = FaColumns;
 export const CourseIcon = FaGraduationCap;

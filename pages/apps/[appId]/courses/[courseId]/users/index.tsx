@@ -1,5 +1,4 @@
 import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { Container } from '~/components/layouts/container';
 import { Layout } from '~/components/layouts/courses/layout';
@@ -10,12 +9,10 @@ import { CourseUserServiceRest } from '~/services/rest-api/services/course-user/
 import { desconnectedUrl } from '~/utils/constants';
 
 export default function Home({ users, ...props }) {
-  const router = useRouter();
-
   return (
     <Layout>
-      <Container flex="1" paddingY={10} flexDir="column">
-        <Header onSuccess={() => router.reload()} title="Alunos" />
+      <Container paddingY={10} flexDir="column">
+        <Header title="Alunos" />
         {users && users.length > 0 ? <ListUsers users={users} /> : <NoUser />}
       </Container>
     </Layout>
@@ -45,8 +42,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const status = context?.query?.status ? context?.query?.status + '' : null;
-  const users = await courseUserService.findAll({ filter: { status } });
+  const users = await courseUserService.findAll();
   return {
     props: {
       users: users?.items,

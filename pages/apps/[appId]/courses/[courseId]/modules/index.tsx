@@ -14,7 +14,7 @@ export default function Home({ modules, courseId, appId, ...props }) {
 
   return (
     <Layout>
-      <Container flex="1" paddingY={10} flexDir="column">
+      <Container flex="1" paddingY={8} flexDir="column">
         <Header
           onSuccess={() => router.reload()}
           appId={appId}

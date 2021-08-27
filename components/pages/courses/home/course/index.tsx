@@ -1,31 +1,62 @@
-import { Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { memo } from "react";
-import { ButtonOutlined } from "~/components/ui/button";
-import { Card } from "~/components/ui/card";
-import { CourseAvatar } from "~/components/ui/course-avatar";
-import { CourseModel } from "~/services/@types/course";
+import { AvatarGroup, Flex, Text } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { memo } from 'react';
+import { AppAvatar } from '~/components/ui/app-avatar';
+import { ButtonOutlined } from '~/components/ui/button';
+import { Card } from '~/components/ui/card';
+import { CourseAvatar } from '~/components/ui/course-avatar';
+import { UserAvatar } from '~/components/ui/user-avatar';
+import { CourseModel } from '~/services/@types/course';
 
 interface Props {
   readonly course: CourseModel;
+  readonly appId: string;
 }
 
-export const Course: React.FC<Props> = memo(({ course }) => {
+export const Course: React.FC<Props> = memo(({ course, appId }) => {
   const router = useRouter();
-
   return (
     <Card
-      title={course.name}
-      avatar={<CourseAvatar size="lg" src={course.imageUrl} name={course.name} />}
+      title={course?.name}
+      avatar={
+        <CourseAvatar name={course?.name} src={course?.imageUrl} size="lg" />
+      }
       body={
-        <Flex paddingTop={3}>
+        course?.teachers?.length > 0 && (
+          <Flex width="full" flexDirection="column" paddingY={2}>
+            <Text lineHeight="shorter" color="gray.500" marginBottom={1}>
+              Professores
+            </Text>
+            <AvatarGroup size="sm" max={2}>
+              {course?.teachers?.map((teacher) => (
+                <UserAvatar
+                  key={teacher.id}
+                  src={teacher?.avatar}
+                  name={teacher?.fullname}
+                />
+              ))}
+            </AvatarGroup>
+          </Flex>
+        )
+      }
+      footer={
+        <Flex
+          width="full"
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
           <ButtonOutlined onClick={() => router.push(`/courses/${course.id}`)}>
             Acessar
           </ButtonOutlined>
+
+          {course?.app && (
+            <AppAvatar src={course.app?.logo} name={course.app?.name} />
+          )}
         </Flex>
       }
     />
   );
 });
 
-Course.displayName = "Course";
+Course.displayName = 'Course';

@@ -1,6 +1,7 @@
 import { Flex, Stack } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import React from 'react';
+import { Container } from '~/components/layouts/container';
 import { Layout } from '~/components/pages/courses/layout';
 import ListModules from '~/components/pages/courses/modules/list-modules';
 import { Description } from '~/components/pages/courses/videos/description';
@@ -21,32 +22,34 @@ interface Props {
 export default function Home({ video, courseId, modules, ...props }: Props) {
   return (
     <Layout>
-      <Stack
-        width="full"
-        spacing={5}
-        direction={['column', 'column', 'row', 'row']}
-      >
-        <Flex flex={1} flexDir="column">
-          <Card
-            body={
-              <>
-                <VideoPlayer url={video?.url} />
-                <Title title={video?.title} />
-                {video?.description && (
-                  <Description description={video?.description} />
-                )}
-              </>
-            }
-          />
-        </Flex>
-        <Flex
-          width={['full', 'full', '350px', '350px']}
-          paddingBottom="50"
-          flexDir="column"
+      <Container paddingY={8}>
+        <Stack
+          width="full"
+          spacing={5}
+          direction={['column', 'column', 'row', 'row']}
         >
-          <ListModules modules={modules} currentVideoId={video?.id} openAll />
-        </Flex>
-      </Stack>
+          <Flex flex={1} flexDir="column">
+            <Card
+              body={
+                <>
+                  <VideoPlayer url={video?.url} />
+                  <Title title={video?.title} />
+                  {video?.description && (
+                    <Description description={video?.description} />
+                  )}
+                </>
+              }
+            />
+          </Flex>
+          <Flex
+            width={['full', 'full', '350px', '350px']}
+            paddingBottom="50"
+            flexDir="column"
+          >
+            <ListModules modules={modules} currentVideoId={video?.id} openAll />
+          </Flex>
+        </Stack>
+      </Container>
     </Layout>
   );
 }

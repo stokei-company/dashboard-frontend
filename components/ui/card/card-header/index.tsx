@@ -1,8 +1,8 @@
-import { Avatar, Flex, Stack } from "@chakra-ui/react";
-import React, { ReactNode } from "react";
-import { colors } from "~/styles/colors";
-import { CardSubtitle } from "../card-subtitle";
-import { CardTitle } from "../card-title";
+import { Avatar, Flex, Stack } from '@chakra-ui/react';
+import React, { ReactNode } from 'react';
+import { colors } from '~/styles/colors';
+import { CardSubtitle } from '../card-subtitle';
+import { CardTitle } from '../card-title';
 
 export interface CardHeaderProps {
   readonly title?: any;
@@ -16,15 +16,15 @@ export const CardHeader: React.FC<CardHeaderProps> = ({
   subtitle,
   avatar,
   avatarName,
-  children,
+  children
 }) => {
   return (
-    <Stack direction="row" spacing="2" align="center" marginBottom={3}>
+    <Stack direction="row" spacing="2" align="center">
       {(avatar || avatarName) &&
-        (typeof avatar === "string" || !avatar ? (
+        (typeof avatar === 'string' || !avatar ? (
           <Avatar
             name={avatarName}
-            src={avatar ? avatar + "" : ""}
+            src={avatar ? avatar + '' : ''}
             size="md"
             backgroundColor={colors.primary.main}
             color="white"
@@ -33,10 +33,10 @@ export const CardHeader: React.FC<CardHeaderProps> = ({
           <Flex>{avatar}</Flex>
         ))}
       {(title || subtitle) && (
-        <Stack direction="column" spacing={1} align="flex-start">
+        <Flex flexDirection="column">
           {title && <CardTitle>{title}</CardTitle>}
           {subtitle && <CardSubtitle>{subtitle}</CardSubtitle>}
-        </Stack>
+        </Flex>
       )}
     </Stack>
   );

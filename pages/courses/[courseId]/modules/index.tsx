@@ -1,19 +1,19 @@
-import { Flex } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import React from 'react';
+import { Container } from '~/components/layouts/container';
+import { Layout } from '~/components/pages/courses/layout';
 import { Header } from '~/components/pages/courses/modules/header';
 import { ListModules } from '~/components/pages/courses/modules/list-modules';
-import { Layout } from '~/components/pages/courses/layout';
 import { CourseModuleServiceRest } from '~/services/rest-api/services/course-module/course-module.service';
 import { desconnectedUrl } from '~/utils/constants';
 
 export default function Home({ modules, courseId, ...props }) {
   return (
     <Layout>
-      <Flex flex="1" paddingBottom="50" flexDir="column">
+      <Container flex="1" paddingY={8} flexDir="column">
         <Header title="Módulos" />
         <ListModules modules={modules} openAll />
-      </Flex>
+      </Container>
     </Layout>
   );
 }
