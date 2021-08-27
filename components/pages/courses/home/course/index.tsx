@@ -10,10 +10,9 @@ import { CourseModel } from '~/services/@types/course';
 
 interface Props {
   readonly course: CourseModel;
-  readonly appId: string;
 }
 
-export const Course: React.FC<Props> = memo(({ course, appId }) => {
+export const Course: React.FC<Props> = memo(({ course }) => {
   const router = useRouter();
   return (
     <Card

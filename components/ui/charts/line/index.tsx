@@ -69,3 +69,4 @@ export const ChartLine: React.FC<ChartLineProps> = memo(
     );
   }
 );
+ChartLine.displayName = 'ChartLine';

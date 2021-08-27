@@ -2,7 +2,6 @@ import { Flex, Heading } from '@chakra-ui/react';
 import { ChartData } from 'chart.js';
 import React, { memo, useMemo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
-import { colors } from '~/styles/colors';
 import { generateRandomColor } from '~/utils/generate-random-color';
 
 export interface ChartDoughnutData {
@@ -57,3 +56,5 @@ export const ChartDoughnut: React.FC<ChartDoughnutProps> = memo(
     );
   }
 );
+
+ChartDoughnut.displayName = 'ChartDoughnut';

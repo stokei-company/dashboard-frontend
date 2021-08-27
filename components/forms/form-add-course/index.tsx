@@ -94,7 +94,7 @@ export const FormAddCourse: React.FC<Props> = ({
       ]);
       formik.setFieldValue('teachers', [user?.id]);
     }
-  }, [user]);
+  }, [formik, user]);
 
   const removeTeacher = useCallback((index: number) => {
     setTeachers((list) => list.filter((_, i) => i !== index));
@@ -129,23 +129,20 @@ export const FormAddCourse: React.FC<Props> = ({
         ]);
       }
     },
-    [formik.values?.teachers]
+    [formik]
   );
 
-  const findAllUsers = useCallback(
-    async (text: string) => {
-      if (!text) {
-        return [];
-      }
-      const userService = new UserServiceRest({});
-      const response = await userService.findAll({ fullname: text, limit: 25 });
-      if (!response?.items?.length) {
-        return [];
-      }
-      return response?.items;
-    },
-    [user]
-  );
+  const findAllUsers = useCallback(async (text: string) => {
+    if (!text) {
+      return [];
+    }
+    const userService = new UserServiceRest({});
+    const response = await userService.findAll({ fullname: text, limit: 25 });
+    if (!response?.items?.length) {
+      return [];
+    }
+    return response?.items;
+  }, []);
 
   return (
     <Flex gridArea="form" flex={1} height="auto" flexDir="column">

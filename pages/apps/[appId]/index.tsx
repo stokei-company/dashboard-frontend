@@ -1,9 +1,8 @@
-import { Box, SimpleGrid, Stack } from '@chakra-ui/react';
+import { SimpleGrid } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { Layout } from '~/components/layouts/apps/layout';
 import { Container } from '~/components/layouts/container';
 import { Card } from '~/components/ui/card';
-import { ChartArea } from '~/components/ui/charts/area';
 import { ChartBar } from '~/components/ui/charts/bar';
 import { ChartDoughnut } from '~/components/ui/charts/doughnut';
 import { ChartLine } from '~/components/ui/charts/line';
@@ -39,7 +38,6 @@ export default function Home({ app, ...props }) {
           <Card body={<ChartLine title="Pedidos" data={data} />} />
           <Card body={<ChartDoughnut title="Pedidos" data={data} />} />
           <Card body={<ChartPie title="Pedidos" data={data} />} />
-          <Card body={<ChartArea title="Pedidos" data={data} />} />
         </SimpleGrid>
       </Container>
     </Layout>

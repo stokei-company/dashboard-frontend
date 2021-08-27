@@ -54,3 +54,4 @@ export const ChartBar: React.FC<ChartBarProps> = memo(
     );
   }
 );
+ChartBar.displayName = 'ChartBar';

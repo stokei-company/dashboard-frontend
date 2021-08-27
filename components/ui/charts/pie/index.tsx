@@ -62,3 +62,4 @@ export const ChartPie: React.FC<ChartPieProps> = memo(
     );
   }
 );
+ChartPie.displayName = 'ChartPie';
