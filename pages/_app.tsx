@@ -1,21 +1,21 @@
-import Head from "next/head";
-import Router from "next/router";
-import NProgress from "nprogress";
-import AlertsContextProvider from "~/contexts/alerts";
-import AppContextProvider from "~/contexts/app";
-import AuthContextProvider from "~/contexts/auth";
-import "~/styles/global/antd.css";
-import "~/styles/global/global.css";
-import "~/styles/global/nprogress.css";
-import "~/styles/global/video-player.css";
-import { faviconUrl } from "~/utils/constants";
-import ThemeContainer from "../contexts/theme/ThemeContainer";
+import Head from 'next/head';
+import Router from 'next/router';
+import NProgress from 'nprogress';
+import AlertsContextProvider from '~/contexts/alerts';
+import AppContextProvider from '~/contexts/app';
+import AuthContextProvider from '~/contexts/auth';
+import '~/styles/global/antd.css';
+import '~/styles/global/global.css';
+import '~/styles/global/nprogress.css';
+import '~/styles/global/video-player.css';
+import { faviconUrl } from '~/utils/constants';
+import ThemeContainer from '../contexts/theme/ThemeContainer';
 
-Router.events.on("routeChangeStart", (url) => {
+Router.events.on('routeChangeStart', (url) => {
   NProgress.start();
 });
-Router.events.on("routeChangeComplete", () => NProgress.done());
-Router.events.on("routeChangeError", () => NProgress.done());
+Router.events.on('routeChangeComplete', () => NProgress.done());
+Router.events.on('routeChangeError', () => NProgress.done());
 
 function MyApp({ Component, pageProps }) {
   return (

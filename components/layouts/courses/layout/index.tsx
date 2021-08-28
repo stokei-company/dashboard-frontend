@@ -15,7 +15,6 @@ import {
   LayoutProps
 } from '~/components/layouts/layout';
 import { CourseContext, CourseContextProvider } from '~/contexts/course';
-import Header from '../header';
 
 interface Props extends LayoutProps {}
 
@@ -107,7 +106,6 @@ export const Layout: React.FC<Props> = ({
               }
             ]}
           >
-            <Header />
             <main>{children}</main>
           </LayoutDefault>
         )}

@@ -61,6 +61,11 @@ export const ChartLine: React.FC<ChartLineProps> = memo(
           <Line
             data={dataFormatted}
             options={{
+              plugins: {
+                title: {
+                  display: false
+                }
+              },
               maintainAspectRatio: false
             }}
           />

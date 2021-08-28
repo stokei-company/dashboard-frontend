@@ -1,9 +1,6 @@
-import { Flex, Icon, Image, Stack } from '@chakra-ui/react';
+import { Flex, Icon, Stack } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import React, { useContext } from 'react';
-import { useEffect } from 'react';
-import { useCallback } from 'react';
-import { useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { UserIcon } from '~/components/icons';
 import { Button } from '~/components/ui/button';
@@ -13,7 +10,6 @@ import { InputFileImage } from '~/components/ui/input-file-image';
 import { InputSearch } from '~/components/ui/input-search';
 import { Select } from '~/components/ui/select';
 import { TextEditor } from '~/components/ui/text-editor';
-import { Textarea } from '~/components/ui/textarea';
 import { UserAvatar } from '~/components/ui/user-avatar';
 import { AlertsContext } from '~/contexts/alerts';
 import { AuthContext } from '~/contexts/auth';
@@ -43,7 +39,7 @@ export const FormAddCourse: React.FC<Props> = ({
       name: '',
       description: '',
       categoryId: '',
-      images: [],
+      image: null,
       teachers: []
     },
     validationSchema: Yup.object({
@@ -57,8 +53,8 @@ export const FormAddCourse: React.FC<Props> = ({
         formData.append('name', values.name);
         formData.append('description', values.description);
         formData.append('categoryId', values.categoryId);
-        formData.append('teachers', values.teachers as any);
-        formData.append('images', values.images as any);
+        formData.append('teachers', JSON.stringify(values.teachers));
+        formData.append('image', values.image);
 
         const courseService = new CourseServiceRest({ appId });
         const data = await courseService.create(formData);
@@ -81,6 +77,10 @@ export const FormAddCourse: React.FC<Props> = ({
     }
   });
 
+  const setTeachersFormik = (userId: string) => {
+    formik.setFieldValue('teachers', [userId]);
+  };
+
   useEffect(() => {
     if (user) {
       setTeachers((list) => [
@@ -92,45 +92,42 @@ export const FormAddCourse: React.FC<Props> = ({
           avatar: user.avatar
         }
       ]);
-      formik.setFieldValue('teachers', [user?.id]);
+      setTeachersFormik(user?.id);
     }
-  }, [formik, user]);
+  }, [user]);
 
   const removeTeacher = useCallback((index: number) => {
     setTeachers((list) => list.filter((_, i) => i !== index));
   }, []);
 
-  const addTeacher = useCallback(
-    (teacher: UserModel) => {
-      const existsLogic = (user: UserModel) => user.id === teacher.id;
+  const addTeacher = (teacher: UserModel) => {
+    const existsLogic = (user: UserModel) => user.id === teacher.id;
 
-      setTeachers((list) => {
-        const exists = list.find(existsLogic);
-        if (exists) {
-          return list;
-        }
-        return [
-          ...list,
-          {
-            id: teacher.id,
-            firstname: teacher.firstname,
-            lastname: teacher.lastname,
-            fullname: teacher.fullname,
-            avatar: teacher.avatar
-          }
-        ];
-      });
-
-      const exists = formik.values?.teachers?.find(existsLogic);
-      if (!exists) {
-        formik.setFieldValue('teachers', [
-          ...formik.values?.teachers,
-          teacher?.id
-        ]);
+    setTeachers((list) => {
+      const exists = list.find(existsLogic);
+      if (exists) {
+        return list;
       }
-    },
-    [formik]
-  );
+      return [
+        ...list,
+        {
+          id: teacher.id,
+          firstname: teacher.firstname,
+          lastname: teacher.lastname,
+          fullname: teacher.fullname,
+          avatar: teacher.avatar
+        }
+      ];
+    });
+
+    const exists = formik.values?.teachers?.find(existsLogic);
+    if (!exists) {
+      formik.setFieldValue('teachers', [
+        ...formik.values?.teachers,
+        teacher?.id
+      ]);
+    }
+  };
 
   const findAllUsers = useCallback(async (text: string) => {
     if (!text) {
@@ -157,20 +154,15 @@ export const FormAddCourse: React.FC<Props> = ({
           <Stack direction="column" spacing={5}>
             <Flex width={['full', 'full', '200px', '200px']}>
               <InputFileImage
-                id="images"
+                id="image"
                 label="Imagens"
                 errorMessage={
-                  formik.touched.images && formik.errors.images
+                  formik.touched.image && formik.errors.image
                     ? 'Imagem inválida!'
                     : null
                 }
                 onChange={(event) => {
-                  if (event.target.files[0]) {
-                    formik.setFieldValue('images', [
-                      ...(formik.values.images || []),
-                      event.target.files[0] || ''
-                    ]);
-                  }
+                  formik.setFieldValue('image', event.target.files[0] || '');
                 }}
               />
             </Flex>

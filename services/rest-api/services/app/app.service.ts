@@ -1,4 +1,5 @@
 import { AppModel } from '~/services/@types/app';
+import { FindAllPayload } from '~/services/interfaces/find-all.payload';
 import { BaseService, BaseServiceConfig } from '../base-service';
 
 export interface AppServiceConfig extends BaseServiceConfig {}
@@ -20,10 +21,19 @@ export class AppServiceRest extends BaseService {
     return null;
   }
 
-  async findAll(): Promise<AppModel[]> {
+  async findAll(data?: {
+    name?: string;
+    nickname?: string;
+    country?: string;
+    status?: string;
+    blockedAt?: string;
+    canceledAt?: string;
+    updatedAt?: string;
+    createdAt?: string;
+  }): Promise<FindAllPayload<AppModel>> {
     try {
-      const response = await this.client.get<AppModel[]>(`/apps`);
-      if (response?.data && response?.data.length > 0) {
+      const response = await this.client.get<FindAllPayload<AppModel>>(`/apps`);
+      if (response?.data) {
         return response.data;
       }
     } catch (error) {}

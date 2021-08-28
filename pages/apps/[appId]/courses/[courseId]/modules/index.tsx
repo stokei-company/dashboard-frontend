@@ -55,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const modules = await courseModuleService.findAll();
   return {
     props: {
-      modules,
+      modules: modules || [],
       courseId,
       appId
     }

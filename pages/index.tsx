@@ -3,7 +3,6 @@ import { GetServerSideProps } from 'next';
 import { Container } from '~/components/layouts/container';
 import { Layout } from '~/components/layouts/root/layout';
 import { ListApps } from '~/components/pages/home/list-apps';
-import { MenuItemData } from '~/contexts/menu';
 import { AppModel } from '~/services/@types/app';
 import { AppServiceRest } from '~/services/rest-api/services/app/app.service';
 
@@ -39,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const apps = await appService.findAll();
   return {
     props: {
-      apps
+      apps: apps?.items || []
     }
   };
 };

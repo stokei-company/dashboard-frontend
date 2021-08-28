@@ -1,7 +1,7 @@
-import { Flex, FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
-import React, { forwardRef, useEffect, useRef, useState } from "react";
-import stylesMarkdown from "~/components/ui/markdown/markdown.module.css";
-import styles from "./style.module.css";
+import { Flex, FormControl, FormHelperText, FormLabel } from '@chakra-ui/react';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import stylesMarkdown from '~/components/ui/markdown/markdown.module.css';
+import styles from './style.module.css';
 
 export interface TextEditorProps {
   readonly id?: string;
@@ -34,8 +34,8 @@ export const TextEditor: React.FC<TextEditorProps> = forwardRef(
 
     useEffect(() => {
       editorRef.current = {
-        CKEditor: require("@ckeditor/ckeditor5-react").CKEditor, // v3+
-        ClassicEditor: require("@ckeditor/ckeditor5-build-classic"),
+        CKEditor: require('@ckeditor/ckeditor5-react').CKEditor, // v3+
+        ClassicEditor: require('@ckeditor/ckeditor5-build-classic')
       };
       setEditorLoaded(true);
     }, []);
@@ -46,7 +46,7 @@ export const TextEditor: React.FC<TextEditorProps> = forwardRef(
 
         <Flex
           className={
-            styles["text-editor"] + " " + stylesMarkdown["markdown-body"]
+            styles['text-editor'] + ' ' + stylesMarkdown['markdown-body']
           }
           width="full"
         >
@@ -57,19 +57,19 @@ export const TextEditor: React.FC<TextEditorProps> = forwardRef(
               editor={ClassicEditor}
               config={{
                 allowedContent: true,
-                extraAllowedContent: "*{*}",
+                extraAllowedContent: '*{*}',
                 toolbar: [
-                  "heading",
-                  "|",
-                  "bold",
-                  "italic",
-                  "link",
-                  "numberedList",
-                  "bulletedList",
-                  "|",
-                  "undo",
-                  "redo",
-                ],
+                  'heading',
+                  '|',
+                  'bold',
+                  'italic',
+                  'link',
+                  'numberedList',
+                  'bulletedList',
+                  '|',
+                  'undo',
+                  'redo'
+                ]
               }}
               data={initialValue}
               onChange={(event, editor) => onChange(editor?.getData())}

@@ -43,7 +43,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   });
   return {
     props: {
-      plans,
+      plans: plans || [],
       courseId,
       appId
     }

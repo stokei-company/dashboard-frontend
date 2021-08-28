@@ -1,6 +1,7 @@
-import { Stack } from "@chakra-ui/react";
-import { SkuModel } from "~/services/@types/sku";
-import { Plan } from "../plan";
+import { Stack } from '@chakra-ui/react';
+import { SkuModel } from '~/services/@types/sku';
+import { NoPlans } from '../no-plans';
+import { Plan } from '../plan';
 
 interface Props {
   readonly appId: string;
@@ -11,9 +12,13 @@ interface Props {
 export const ListPlans: React.FC<Props> = ({ plans, courseId, appId }) => {
   return (
     <Stack width="full" direction="column" spacing={5}>
-      {plans?.map((plan) => (
-        <Plan key={plan.id} courseId={courseId} appId={appId} plan={plan} />
-      ))}
+      {plans?.length > 0 ? (
+        plans?.map((plan) => (
+          <Plan key={plan.id} courseId={courseId} appId={appId} plan={plan} />
+        ))
+      ) : (
+        <NoPlans />
+      )}
     </Stack>
   );
 };
