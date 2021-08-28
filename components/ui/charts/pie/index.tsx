@@ -1,9 +1,8 @@
 import { Flex, Heading } from '@chakra-ui/react';
 import { ChartData } from 'chart.js';
-import React, { memo } from 'react';
-import { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { Pie } from 'react-chartjs-2';
-import { colors } from '~/styles/colors';
+import { chakraColors } from '~/styles/colors';
 import { generateRandomColor } from '~/utils/generate-random-color';
 
 export interface ChartPieData {
@@ -25,9 +24,10 @@ export const ChartPie: React.FC<ChartPieProps> = memo(
         labels = (data || []).map((item) => item.label);
       }
       const values = (data || []).map((item) => item.value);
-      const bgColors: string[] = Array.from({ length: values.length }).map(
-        (item) => generateRandomColor()
-      );
+      const bgColors: string[] = Array.from(
+        { length: values.length },
+        (_, i) => i
+      ).map((item) => chakraColors[item] || generateRandomColor());
       return {
         labels,
         datasets: [
@@ -54,6 +54,11 @@ export const ChartPie: React.FC<ChartPieProps> = memo(
           <Pie
             data={dataFormatted}
             options={{
+              plugins: {
+                legend: {
+                  position: 'right'
+                }
+              },
               maintainAspectRatio: false
             }}
           />

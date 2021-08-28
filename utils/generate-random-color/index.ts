@@ -1,19 +1,8 @@
-import { colors } from '~/styles/colors';
-
 export const generateRandomColor = () => {
-  const listColors = [
-    '#E53E3E',
-    '#ED8936',
-    '#ECC94B',
-    '#48BB78',
-    '#319795',
-    '#38B2AC',
-    '#4299E1',
-    '#00B5D8',
-    '#805AD5',
-    '#D53F8C',
-    colors.primary.mainHex
-  ];
-  let num = Math.floor(Math.random() * listColors.length + 1);
-  return listColors[num];
+  const random = (min: number = 0, max: number = 255) =>
+    Math.floor(Math.random() * max + min);
+  const r = random(0, 255);
+  const g = random(0, 100);
+  const b = random(0, 100);
+  return `hsla(${r},${g}%,${b}%,1)`;
 };

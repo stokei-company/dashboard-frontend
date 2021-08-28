@@ -53,7 +53,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   });
   return {
     props: {
-      subscriptions: subscriptions?.items,
+      subscriptions: subscriptions?.items || [],
       courseId,
       appId
     }

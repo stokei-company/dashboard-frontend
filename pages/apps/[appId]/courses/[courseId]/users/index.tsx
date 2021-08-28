@@ -13,7 +13,7 @@ export default function Home({ users, ...props }) {
     <Layout>
       <Container paddingY={10} flexDir="column">
         <Header title="Alunos" />
-        {users && users.length > 0 ? <ListUsers users={users} /> : <NoUser />}
+        {users?.length > 0 ? <ListUsers users={users} /> : <NoUser />}
       </Container>
     </Layout>
   );
@@ -45,7 +45,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const users = await courseUserService.findAll();
   return {
     props: {
-      users: users?.items,
+      users: users?.items || [],
       courseId,
       appId
     }

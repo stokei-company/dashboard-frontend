@@ -12,6 +12,14 @@ import { desconnectedUrl } from '~/utils/constants';
 
 const data = [
   {
+    label: 'Janeiro',
+    value: 25
+  },
+  {
+    label: 'Fevereiro',
+    value: 32
+  },
+  {
     label: 'Março',
     value: 100
   },
@@ -26,6 +34,30 @@ const data = [
   {
     label: 'Junho',
     value: 89
+  },
+  {
+    label: 'Julho',
+    value: 12
+  },
+  {
+    label: 'Agosto',
+    value: 66
+  },
+  {
+    label: 'Setembro',
+    value: 80
+  },
+  {
+    label: 'Outubro',
+    value: 79
+  },
+  {
+    label: 'Novembro',
+    value: 77
+  },
+  {
+    label: 'Dezembro',
+    value: 132
   }
 ];
 

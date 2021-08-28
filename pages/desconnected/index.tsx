@@ -1,21 +1,33 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
-import { useCallback } from "react";
-import { Container } from "~/components/layouts/container";
-import { Layout } from "~/components/layouts/layout";
-import { Button } from "~/components/ui/button";
-import { AUTH_FRONTEND_URL } from "~/environments";
-import { mountUri } from "~/utils/uri/mount-uri";
+import { Flex, Heading, Text } from '@chakra-ui/react';
+import { GetServerSideProps } from 'next';
+import router from 'next/router';
+import { useCallback, useContext, useEffect } from 'react';
+import { Container } from '~/components/layouts/container';
+import { Layout } from '~/components/layouts/layout';
+import { Button } from '~/components/ui/button';
+import { AuthContext } from '~/contexts/auth';
+import { AUTH_FRONTEND_URL } from '~/environments';
+import { MeServiceRest } from '~/services/rest-api/services/me/me.service';
+import { mountUri } from '~/utils/uri/mount-uri';
 
 export default function Home({ ...props }) {
+  const { authenticated } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (authenticated) {
+      router.replace('/');
+    }
+  }, [authenticated]);
+
   const redirectUrl = useCallback(async () => {
-    let values = window.location.href.split("/");
+    let values = window.location.href.split('/');
     await values.pop();
-    const redirectUri = values.join("/");
+    const redirectUri = values.join('/');
     const href = await mountUri(AUTH_FRONTEND_URL, [
       {
-        key: "redirectUri",
-        value: redirectUri,
-      },
+        key: 'redirectUri',
+        value: redirectUri
+      }
     ]);
     window.location.href = href;
   }, []);
@@ -41,3 +53,18 @@ export default function Home({ ...props }) {
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const meService = new MeServiceRest({ context });
+  if (meService.accessToken) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    };
+  }
+  return {
+    props: {}
+  };
+};

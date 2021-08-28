@@ -2,6 +2,7 @@ import { Flex, Heading } from '@chakra-ui/react';
 import { ChartData } from 'chart.js';
 import React, { memo, useMemo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
+import { chakraColors } from '~/styles/colors';
 import { generateRandomColor } from '~/utils/generate-random-color';
 
 export interface ChartDoughnutData {
@@ -19,9 +20,10 @@ export const ChartDoughnut: React.FC<ChartDoughnutProps> = memo(
     const dataFormatted: ChartData = useMemo(() => {
       const labels = (data || []).map((item) => item.label);
       const values = (data || []).map((item) => item.value);
-      const bgColors: string[] = Array.from({ length: values.length }).map(
-        (item) => generateRandomColor()
-      );
+      const bgColors: string[] = Array.from(
+        { length: values.length },
+        (_, i) => i
+      ).map((item) => chakraColors[item] || generateRandomColor());
       return {
         labels,
         datasets: [
@@ -48,6 +50,11 @@ export const ChartDoughnut: React.FC<ChartDoughnutProps> = memo(
           <Doughnut
             data={dataFormatted}
             options={{
+              plugins: {
+                legend: {
+                  position: 'right'
+                }
+              },
               maintainAspectRatio: false
             }}
           />
