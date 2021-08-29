@@ -1,12 +1,12 @@
-import { Flex, Heading, Icon, Skeleton, Stack } from "@chakra-ui/react";
-import React, { memo, useContext, useState } from "react";
-import { ArrowDownIcon, ArrowUpIcon } from "~/components/icons";
-import { Card } from "~/components/ui/card";
-import { AppContext } from "~/contexts/app";
-import { useModuleVideos } from "~/hooks/use-module-videos";
-import { ModuleModel } from "~/services/@types/module";
-import { colors } from "~/styles/colors";
-import { Playlist } from "../playlist";
+import { Flex, Heading, Icon, Skeleton, Stack } from '@chakra-ui/react';
+import React, { memo, useContext, useState } from 'react';
+import { ArrowDownIcon, ArrowUpIcon } from '~/components/icons';
+import { Card } from '~/components/ui/card';
+import { AppContext } from '~/contexts/app';
+import { useModuleVideos } from '~/hooks/use-module-videos';
+import { ModuleModel } from '~/services/@types/module';
+import { colors } from '~/styles/colors';
+import { Playlist } from '../playlist';
 
 interface Props {
   readonly module: ModuleModel;
@@ -20,7 +20,7 @@ export const Module: React.FC<Props> = memo(
     const { app } = useContext(AppContext);
     const { videos: playlist, loading } = useModuleVideos({
       moduleId: module?.id,
-      appId: app?.id,
+      appId: app?.id
     });
 
     return (
@@ -44,7 +44,7 @@ export const Module: React.FC<Props> = memo(
                 <Flex flex={1} alignItems="center">
                   <Playlist
                     moduleId={module?.id}
-                    videos={playlist}
+                    videos={playlist?.items || []}
                     currentVideoId={currentVideoId}
                   />
                 </Flex>

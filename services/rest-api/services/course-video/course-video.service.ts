@@ -1,4 +1,5 @@
 import { VideoModel } from '~/services/@types/video';
+import { FindAllPayload } from '~/services/interfaces/find-all.payload';
 import { BaseService, BaseServiceConfig } from '../base-service';
 import { CreateCourseVideoDTO } from './dtos/create-course-video.dto';
 import { UpdateCourseVideoDTO } from './dtos/update-course-video.dto';
@@ -65,15 +66,33 @@ export class CourseVideoServiceRest extends BaseService {
     return null;
   }
 
-  async findAll(): Promise<VideoModel[]> {
+  async findAll(data?: {
+    page?: string;
+    limit?: string;
+    title?: string;
+    description?: string;
+    position?: string;
+    status?: string;
+    updatedAt?: string;
+    createdAt?: string;
+  }): Promise<FindAllPayload<VideoModel>> {
     try {
-      const response = await this.client.get<VideoModel[]>(
-        `/modules/${this.moduleId}/videos`
+      const requestData = Object.entries(data || {});
+      const params =
+        requestData.length > 0
+          ? requestData.map(([key, value]) => `${key}=${value || ''}`).join('&')
+          : '';
+      const response = await this.client.get<FindAllPayload<VideoModel>>(
+        `/modules/${this.moduleId}/videos${
+          requestData?.length ? '?' + params : ''
+        }`
       );
-      if (response?.data && response?.data.length > 0) {
+      if (response?.data) {
         return response.data;
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
     return null;
   }
 }

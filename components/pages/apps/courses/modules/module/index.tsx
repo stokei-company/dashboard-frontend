@@ -6,21 +6,21 @@ import {
   Skeleton,
   Spacer,
   Stack,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import React, { memo, useContext, useEffect } from "react";
-import { PlusIcon } from "~/components/icons";
-import { ButtonOutlined } from "~/components/ui/button";
-import { Card } from "~/components/ui/card";
-import { AppContext } from "~/contexts/app";
-import { useModuleVideos } from "~/hooks/use-module-videos";
-import { useRequest } from "~/hooks/use-request";
-import { ModuleModel } from "~/services/@types/module";
-import { CourseModuleServiceRest } from "~/services/rest-api/services/course-module/course-module.service";
-import { colors } from "~/styles/colors";
-import { AddVideo } from "../add-video";
-import { Playlist } from "../playlist";
+  useDisclosure
+} from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import React, { memo, useContext, useEffect } from 'react';
+import { PlusIcon } from '~/components/icons';
+import { ButtonOutlined } from '~/components/ui/button';
+import { Card } from '~/components/ui/card';
+import { AppContext } from '~/contexts/app';
+import { useModuleVideos } from '~/hooks/use-module-videos';
+import { useRequest } from '~/hooks/use-request';
+import { ModuleModel } from '~/services/@types/module';
+import { CourseModuleServiceRest } from '~/services/rest-api/services/course-module/course-module.service';
+import { colors } from '~/styles/colors';
+import { AddVideo } from '../add-video';
+import { Playlist } from '../playlist';
 
 interface Props {
   readonly module: ModuleModel;
@@ -34,20 +34,20 @@ export const Module: React.FC<Props> = memo(({ module, courseId }) => {
   const router = useRouter();
   const courseModuleService = new CourseModuleServiceRest({
     courseId,
-    appId: app?.id,
+    appId: app?.id
   });
 
   const { videos: playlist, loading } = useModuleVideos({
     appId: app?.id,
-    moduleId: module?.id,
+    moduleId: module?.id
   });
 
   const {
     loading: loadingRemove,
     data: dataRemove,
-    submit: removeModulo,
+    submit: removeModulo
   } = useRequest({
-    submit: () => courseModuleService.delete(module?.id),
+    submit: () => courseModuleService.delete(module?.id)
   });
 
   useEffect(() => {
@@ -87,7 +87,7 @@ export const Module: React.FC<Props> = memo(({ module, courseId }) => {
               <Playlist
                 moduleId={module.id}
                 moduleName={module.name}
-                videos={playlist}
+                videos={playlist?.items || []}
               />
             </Flex>
           </Skeleton>
@@ -100,7 +100,7 @@ export const Module: React.FC<Props> = memo(({ module, courseId }) => {
           onClick={() => !loadingRemove && removeModulo()}
           fontSize="xs"
         >
-          {loadingRemove ? "Removendo..." : "Remover modulo"}
+          {loadingRemove ? 'Removendo...' : 'Remover modulo'}
         </Link>
       }
     />
