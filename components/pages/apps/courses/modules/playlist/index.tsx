@@ -1,6 +1,6 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import { VideoModel } from "~/services/@types/video";
-import { Video } from "../video";
+import { Box, Flex, Text } from '@chakra-ui/react';
+import { VideoModel } from '~/services/@types/video';
+import { Video } from '../video';
 
 interface Props {
   readonly moduleName: string;
@@ -14,11 +14,12 @@ export const Playlist: React.FC<Props> = ({ videos, moduleId, moduleName }) => {
       {(!videos || videos.length === 0) && (
         <Text color="gray.500">Nenhum video encontrado.</Text>
       )}
-      {videos?.map((video) => (
-        <Box key={video.id} marginBottom="5">
-          <Video moduleId={moduleId} moduleName={moduleName} video={video} />
-        </Box>
-      ))}
+      {videos?.length &&
+        videos?.map((video) => (
+          <Box key={video.id} marginBottom="5">
+            <Video moduleId={moduleId} moduleName={moduleName} video={video} />
+          </Box>
+        ))}
     </Flex>
   );
 };
