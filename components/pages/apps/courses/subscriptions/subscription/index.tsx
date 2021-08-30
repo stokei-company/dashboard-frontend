@@ -7,6 +7,7 @@ import { CourseContext } from '~/contexts/course';
 import { useRequest } from '~/hooks/use-request';
 import { SubscriptionModel } from '~/services/@types/subscription';
 import { CourseSubscriptionServiceRest } from '~/services/rest-api/services/course-subscription/course-subscription.service';
+import { colors } from '~/styles/colors';
 import { differenceDate, formatDate } from '~/utils/format-date';
 
 interface Props {
@@ -51,6 +52,17 @@ const subscriptionStatus = {
   }
 };
 
+const typeObj = {
+  permanent: {
+    color: colors.primary.main,
+    text: 'VITALÍCIO'
+  },
+  recurring: {
+    color: 'teal',
+    text: 'RECORRENTE'
+  }
+};
+
 export const Subscription: React.FC<Props> = memo(({ subscription }) => {
   const router = useRouter();
   const { app, course } = useContext(CourseContext);
@@ -92,6 +104,13 @@ export const Subscription: React.FC<Props> = memo(({ subscription }) => {
       subscriptionStatus[subscription.status] || subscriptionStatus.pending
     );
   }, [subscription.status]);
+
+  const type: {
+    color: string;
+    text: string;
+  } = useMemo(() => {
+    return typeObj[subscription.type] || typeObj.permanent;
+  }, [subscription.type]);
 
   const timeFormatted = useMemo(() => {
     const time: {
@@ -155,28 +174,49 @@ export const Subscription: React.FC<Props> = memo(({ subscription }) => {
       }
       body={
         <Flex flexDir="column">
-          {subscription.status === 'available' && daysToFinish && (
-            <Text fontSize="sm">
-              <b>Expira em:</b> {daysToFinish}
-            </Text>
+          {subscription.type !== 'permanent' && (
+            <>
+              {subscription.status === 'available' && daysToFinish && (
+                <Text fontSize="sm">
+                  <b>Expira em:</b> {daysToFinish}
+                </Text>
+              )}
+              {subscription.recurring && (
+                <Text fontSize="sm">
+                  <b>Tempo total:</b> {timeFormatted}
+                </Text>
+              )}
+            </>
           )}
-          {subscription.recurring && (
-            <Text fontSize="sm">
-              <b>Tempo total:</b> {timeFormatted}
-            </Text>
-          )}
+
           <Text fontSize="sm">
             <b>Inicio:</b> {startAtFormatted}
           </Text>
-          <Text fontSize="sm">
-            <b>Fim:</b> {endAtFormatted}
-          </Text>
+          {subscription.type !== 'permanent' && (
+            <Text fontSize="sm">
+              <b>Fim:</b> {endAtFormatted}
+            </Text>
+          )}
           {subscription.createdAt && (
             <Text fontSize="sm">
               <b>Adicionado:</b> {addedAtFormatted}
             </Text>
           )}
         </Flex>
+      }
+      footer={
+        subscription.type === 'permanent' && (
+          <Flex>
+            <Badge
+              paddingY={1}
+              paddingX={7}
+              color="white"
+              backgroundColor={type.color}
+            >
+              {type.text}
+            </Badge>
+          </Flex>
+        )
       }
     />
   );

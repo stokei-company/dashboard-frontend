@@ -1,14 +1,14 @@
-import { Flex } from "@chakra-ui/react";
-import { useFormik } from "formik";
-import React, { useContext } from "react";
-import * as Yup from "yup";
-import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { InputFile } from "~/components/ui/input-file";
-import { InputFileImage } from "~/components/ui/input-file-image";
-import { Textarea } from "~/components/ui/textarea";
-import { AlertsContext } from "~/contexts/alerts";
-import { CourseMaterialServiceRest } from "~/services/rest-api/services/course-material/course-material.service";
+import { Flex } from '@chakra-ui/react';
+import { useFormik } from 'formik';
+import React, { useContext } from 'react';
+import * as Yup from 'yup';
+import { Button } from '~/components/ui/button';
+import { Input } from '~/components/ui/input';
+import { InputFile } from '~/components/ui/input-file';
+import { InputFileImage } from '~/components/ui/input-file-image';
+import { Textarea } from '~/components/ui/textarea';
+import { AlertsContext } from '~/contexts/alerts';
+import { CourseMaterialServiceRest } from '~/services/rest-api/services/course-material/course-material.service';
 
 interface Props {
   readonly courseId: string;
@@ -25,27 +25,27 @@ export const FormAddCourseMaterial: React.FC<Props> = ({
   const { addAlert } = useContext(AlertsContext);
 
   const formik = useFormik({
-    initialValues: { description: "", title: "", material: null },
+    initialValues: { description: '', title: '', material: null },
     validationSchema: Yup.object({
-      title: Yup.string().required("Obrigatório"),
-      description: Yup.string(),
+      title: Yup.string().required('Obrigatório'),
+      description: Yup.string()
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const formData = new FormData();
-        formData.append("title", values.title);
-        formData.append("description", values.description);
-        formData.append("material", values.material);
+        formData.append('title', values.title);
+        formData.append('description', values.description);
+        formData.append('material', values.material);
 
         const courseMaterialService = new CourseMaterialServiceRest({
           courseId,
-          appId,
+          appId
         });
         const data = await courseMaterialService.create(formData);
         if (data) {
           addAlert({
-            status: "success",
-            text: "Material criado com sucesso!",
+            status: 'success',
+            text: 'Material criado com sucesso!'
           });
           setSubmitting(false);
           onSuccess();
@@ -54,11 +54,11 @@ export const FormAddCourseMaterial: React.FC<Props> = ({
       } catch (error) {}
 
       addAlert({
-        status: "error",
-        text: "Erro ao adicionar o material!",
+        status: 'error',
+        text: 'Erro ao adicionar o material!'
       });
       setSubmitting(false);
-    },
+    }
   });
 
   return (
@@ -67,28 +67,28 @@ export const FormAddCourseMaterial: React.FC<Props> = ({
         <form
           onSubmit={formik.handleSubmit}
           style={{
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column'
           }}
         >
           <InputFile
             id="material"
             label="Material"
             formats={[
-              "application/pdf",
-              "application/zip",
-              "application/x-rar-compressed",
-              "application/octet-stream",
-              "application/x-zip-compressed",
-              "multipart/x-zip",
+              'application/pdf',
+              'application/zip',
+              'application/x-rar-compressed',
+              'application/octet-stream',
+              'application/x-zip-compressed',
+              'multipart/x-zip'
             ]}
             errorMessage={
               formik.touched.material && formik.errors.material
-                ? "Material inválido!"
+                ? 'Material inválido!'
                 : null
             }
             onChange={(event) =>
-              formik.setFieldValue("material", event.target.files[0] || "")
+              formik.setFieldValue('material', event.target.files[0] || '')
             }
           />
 
@@ -97,21 +97,22 @@ export const FormAddCourseMaterial: React.FC<Props> = ({
             name="title"
             label="Nome"
             placeholder="Nome"
-            borderColor={formik.errors.title && "red.400"}
+            borderColor={formik.errors.title && 'red.400'}
             errorMessage={formik.touched.title && formik.errors.title}
-            {...formik.getFieldProps("title")}
+            {...formik.getFieldProps('title')}
           />
 
           <Textarea
+            required={false}
             id="description"
             name="description"
             label="Descrição"
             placeholder="Descrição"
-            borderColor={formik.errors.description && "red.400"}
+            borderColor={formik.errors.description && 'red.400'}
             errorMessage={
               formik.touched.description && formik.errors.description
             }
-            {...formik.getFieldProps("description")}
+            {...formik.getFieldProps('description')}
           />
 
           <Flex>
