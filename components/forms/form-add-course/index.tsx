@@ -17,6 +17,7 @@ import { useCategories } from '~/hooks/use-categories';
 import { UserModel } from '~/services/@types/user';
 import { CourseServiceRest } from '~/services/rest-api/services/course/course.service';
 import { UserServiceRest } from '~/services/rest-api/services/user/user.service';
+import { ASPECT_RATIO_COURSES } from '~/utils/constants';
 import { Teacher, TeacherData } from './teacher';
 
 interface Props {
@@ -156,6 +157,7 @@ export const FormAddCourse: React.FC<Props> = ({
               <InputFileImage
                 id="image"
                 label="Imagens"
+                aspectRatio={ASPECT_RATIO_COURSES}
                 errorMessage={
                   formik.touched.image && formik.errors.image
                     ? 'Imagem inválida!'
@@ -211,7 +213,8 @@ export const FormAddCourse: React.FC<Props> = ({
                     />
                   }
                   title={user?.fullname}
-                  padding={0}
+                  paddingX={0}
+                  paddingY={2}
                   borderRadius="none"
                   boxShadow="none"
                 />

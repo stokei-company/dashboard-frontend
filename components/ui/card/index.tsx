@@ -12,6 +12,7 @@ interface Props extends FlexProps {
   readonly subtitle?: string | ReactNode;
   readonly menu?: CardMenuItemData[];
   readonly headerImage?: string;
+  readonly headerFallbackImage?: string;
   readonly avatar?: string | ReactNode;
   readonly avatarName?: string;
   readonly body?: ReactNode;
@@ -34,6 +35,7 @@ export const Card: React.FC<Props> = ({
   avatar,
   avatarName,
   headerImage,
+  headerFallbackImage,
   padding,
   paddingX,
   paddingY,
@@ -43,6 +45,13 @@ export const Card: React.FC<Props> = ({
   paddingRight,
   ...props
 }) => {
+  const listMenu = useMemo(() => {
+    if (!menu?.length) {
+      return [];
+    }
+    return menu.filter(Boolean);
+  }, [menu]);
+
   return (
     <Flex
       flexDirection="column"
@@ -52,8 +61,10 @@ export const Card: React.FC<Props> = ({
       position="relative"
       {...props}
     >
-      {headerImage && <CardImg image={headerImage} />}
-      {menu?.length > 0 && <CardMenu items={menu} />}
+      {headerImage && (
+        <CardImg image={headerImage} fallbackSrc={headerFallbackImage} />
+      )}
+      {listMenu?.length > 0 && <CardMenu items={listMenu} />}
       <CardContent
         padding={padding}
         paddingX={paddingX}

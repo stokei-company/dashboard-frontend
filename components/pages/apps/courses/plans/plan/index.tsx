@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { memo, useEffect, useMemo } from 'react';
+import { ButtonOutlined } from '~/components/ui/button';
 import { Card } from '~/components/ui/card';
 import { useRequest } from '~/hooks/use-request';
 import { useSkuPrices } from '~/hooks/use-sku-prices';
@@ -22,6 +23,21 @@ interface Props {
   readonly courseId: string;
   readonly plan: SkuModel;
 }
+
+const status = {
+  canceled: {
+    color: 'red',
+    text: 'Cancelado'
+  },
+  available: {
+    color: 'green',
+    text: 'Ativo'
+  },
+  paused: {
+    color: 'teal',
+    text: 'Pausado'
+  }
+};
 
 const times = {
   day: {
@@ -50,16 +66,34 @@ export const Plan: React.FC<Props> = memo(({ plan, courseId, appId }) => {
     appId,
     courseId
   });
+
   const { prices, loading: loadingPrices } = useSkuPrices({
     appId,
     skuId: plan.id
   });
+
   const {
     loading: loadingRemove,
     data: dataRemove,
     submit: remove
   } = useRequest({
     submit: () => courseSkuService.delete(plan?.id)
+  });
+
+  const {
+    loading: loadingStart,
+    data: dataStart,
+    submit: start
+  } = useRequest({
+    submit: () => courseSkuService.start(plan?.id)
+  });
+
+  const {
+    loading: loadingPause,
+    data: dataPause,
+    submit: pause
+  } = useRequest({
+    submit: () => courseSkuService.pause(plan?.id)
   });
 
   const recurring = useMemo(() => {
@@ -74,11 +108,19 @@ export const Plan: React.FC<Props> = memo(({ plan, courseId, appId }) => {
     return `${interval} ${interval === 1 ? time.singular : time.plural}`;
   }, [plan]);
 
+  const statusFormatted = useMemo(() => {
+    const response: {
+      color: string;
+      text: string;
+    } = status[plan.status] || status.canceled;
+    return response;
+  }, [plan]);
+
   useEffect(() => {
-    if (dataRemove) {
+    if (dataRemove || dataPause || dataStart) {
       router.reload();
     }
-  }, [dataRemove, router]);
+  }, [dataRemove, dataPause, dataStart, router]);
 
   return (
     <Card
@@ -88,24 +130,26 @@ export const Plan: React.FC<Props> = memo(({ plan, courseId, appId }) => {
             {plan.name}
           </Heading>
 
-          <Badge colorScheme={plan.active ? 'green' : 'red'}>
-            {plan.active ? 'Ativo' : 'Cancelado'}
+          <Badge colorScheme={statusFormatted.color}>
+            {statusFormatted.text}
           </Badge>
         </Stack>
       }
-      menu={[
-        {
-          text: 'Alterar',
-          onClick: () => onOpen()
-        },
-        {
-          color: 'red.500',
-          text: 'Cancelar',
-          loading: loadingRemove,
-          loadingText: 'Cancelando...',
-          onClick: () => !loadingRemove && remove()
-        }
-      ]}
+      menu={
+        plan.status !== 'canceled' && [
+          {
+            text: 'Alterar',
+            onClick: () => onOpen()
+          },
+          {
+            color: 'red.500',
+            text: 'Cancelar',
+            loading: loadingRemove,
+            loadingText: 'Cancelando...',
+            onClick: () => !loadingRemove && remove()
+          }
+        ]
+      }
       body={
         <>
           <Flex width="full" flexDir="column">
@@ -127,7 +171,7 @@ export const Plan: React.FC<Props> = memo(({ plan, courseId, appId }) => {
                 </Text>
               </Flex>
             )}
-            <Flex>
+            <Flex width="full" flexDir="column">
               <UpdatePlan
                 firstField={refUpdatePlan}
                 isOpen={isOpen}
@@ -137,11 +181,12 @@ export const Plan: React.FC<Props> = memo(({ plan, courseId, appId }) => {
                 plan={plan}
               />
               {loadingPrices && <Text fontSize="sm">Buscando preços...</Text>}
+
               {!loadingPrices &&
                 prices &&
                 prices.length &&
                 prices.map((price) => (
-                  <Flex key={price.id} alignItems="flex-end">
+                  <Flex width="full" key={price.id} alignItems="flex-end">
                     <Stack direction="row" alignItems="center">
                       <Text
                         fontSize="2xl"
@@ -165,6 +210,29 @@ export const Plan: React.FC<Props> = memo(({ plan, courseId, appId }) => {
                     </Stack>
                   </Flex>
                 ))}
+
+              {plan.status === 'available' && (
+                <Flex width="full" marginTop={3}>
+                  <ButtonOutlined
+                    isLoading={loadingPause}
+                    loadingText="Pausando..."
+                    onClick={() => pause()}
+                  >
+                    Pausar
+                  </ButtonOutlined>
+                </Flex>
+              )}
+              {plan.status === 'paused' && (
+                <Flex width="full" marginTop={3}>
+                  <ButtonOutlined
+                    isLoading={loadingStart}
+                    loadingText="Ativando..."
+                    onClick={() => start()}
+                  >
+                    Ativar
+                  </ButtonOutlined>
+                </Flex>
+              )}
             </Flex>
           </Flex>
         </>

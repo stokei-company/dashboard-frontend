@@ -39,11 +39,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   const query = context.query;
   const plans = await courseSkuService.findAll({
-    filter: { active: query?.active + '' }
+    name: ':asc',
+    status: `${query?.status ? query?.status + '' : ''}:asc`
   });
   return {
     props: {
-      plans: plans || [],
+      plans: plans?.items || [],
       courseId,
       appId
     }

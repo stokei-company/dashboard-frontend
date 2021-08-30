@@ -91,11 +91,15 @@ export const Layout: React.FC<Props> = ({
                   },
                   {
                     title: 'Ativos',
-                    href: baseUrl + '/plans?active=true'
+                    href: baseUrl + '/plans?status=available'
                   },
                   {
                     title: 'Cancelados',
-                    href: baseUrl + '/plans?active=false'
+                    href: baseUrl + '/plans?status=canceled'
+                  },
+                  {
+                    title: 'Pausados',
+                    href: baseUrl + '/plans?status=paused'
                   }
                 ]
               },

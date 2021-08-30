@@ -8,30 +8,42 @@ import {
   NumberInputField,
   NumberInputProps as ChakraNumberInputProps,
   NumberInputStepper,
-} from "@chakra-ui/react";
-import React from "react";
+  Text
+} from '@chakra-ui/react';
+import React from 'react';
 
 interface Props extends ChakraNumberInputProps {
   readonly label?: string;
+  readonly required?: boolean;
   readonly helperMessage?: string;
   readonly errorMessage?: string;
 }
 
 export const NumberInput: React.FC<Props> = ({
   label,
+  required = true,
   helperMessage,
   errorMessage,
   ...props
 }) => {
   return (
     <FormControl id={props.id} marginBottom={2}>
-      {label && <FormLabel>{label}</FormLabel>}
+      {label && (
+        <FormLabel>
+          {label}
+          {required && (
+            <Text as="span" marginLeft={3} color="gray.500" fontWeight="normal">
+              (Obrigatório)
+            </Text>
+          )}
+        </FormLabel>
+      )}
 
       <ChakraNumberInput
         size="md"
         backgroundColor="white"
         _hover={{
-          borderColor: "green.600",
+          borderColor: 'green.600'
         }}
         focusBorderColor="green.600"
         borderRadius="sm"
@@ -42,7 +54,7 @@ export const NumberInput: React.FC<Props> = ({
           borderColor="black"
           borderRadius="sm"
           _hover={{
-            borderColor: "black",
+            borderColor: 'black'
           }}
         />
         <NumberInputStepper borderColor="black">
