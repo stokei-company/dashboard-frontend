@@ -17,9 +17,7 @@ export const Course: React.FC<Props> = memo(({ course }) => {
   return (
     <Card
       title={course?.name}
-      avatar={
-        <CourseAvatar name={course?.name} src={course?.imageUrl} size="lg" />
-      }
+      headerImage={course?.imageUrl}
       body={
         course?.teachers?.length > 0 && (
           <Flex width="full" flexDirection="column" paddingY={2}>

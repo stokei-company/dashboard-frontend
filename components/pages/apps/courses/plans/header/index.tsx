@@ -1,9 +1,23 @@
-import { Flex, Heading, Spacer, Stack, useDisclosure } from '@chakra-ui/react';
+import {
+  Badge,
+  Flex,
+  Heading,
+  Spacer,
+  Stack,
+  Text,
+  useDisclosure
+} from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React, { ChangeEvent, useCallback, useContext } from 'react';
+import React, { useMemo } from 'react';
 import { Button } from '~/components/ui/button';
-import { CourseContext } from '~/contexts/course';
 import { AddPlan } from '../add-plan';
+
+const status = {
+  default: 'Todos',
+  canceled: 'Cancelados',
+  available: 'Ativos',
+  paused: 'Pausados'
+};
 
 interface Props {
   readonly title: string;
@@ -13,16 +27,13 @@ interface Props {
 
 export const Header: React.FC<Props> = ({ title, courseId, appId }) => {
   const router = useRouter();
-  const { baseUrl } = useContext(CourseContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const firstField = React.useRef();
+  const query = router?.query;
 
-  const handleSkuStatus = useCallback(
-    (e: ChangeEvent<HTMLSelectElement>) => {
-      router.push(baseUrl + `/plans?active=${e?.target?.value}`);
-    },
-    [baseUrl, router]
-  );
+  const statusFormatted = useMemo(() => {
+    return status[query.status + ''] || status.default;
+  }, [query]);
 
   return (
     <Stack
@@ -31,9 +42,29 @@ export const Header: React.FC<Props> = ({ title, courseId, appId }) => {
       justifyContent="center"
       marginBottom={10}
     >
-      <Heading size="xl" lineHeight="shorter">
-        {title}
-      </Heading>
+      <Stack
+        direction={['column', 'column', 'row', 'row']}
+        spacing={[2, 2, 5, 5]}
+        align={['flex-start', 'flex-start', 'center', 'center']}
+      >
+        <Heading size="xl" lineHeight="shorter">
+          {title}
+          {statusFormatted && (
+            <Badge
+              colorScheme="gray"
+              fontSize="0.4em"
+              paddingX={2}
+              paddingTop={2}
+              paddingBottom={1.5}
+              alignContent="center"
+              lineHeight="shorter"
+              marginLeft={[0, 0, 5, 5]}
+            >
+              {statusFormatted}
+            </Badge>
+          )}
+        </Heading>
+      </Stack>
       <Spacer />
       <Stack
         direction={['column', 'column', 'row', 'row']}

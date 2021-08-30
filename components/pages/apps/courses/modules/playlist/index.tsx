@@ -14,7 +14,7 @@ export const Playlist: React.FC<Props> = ({ videos, moduleId, moduleName }) => {
       {(!videos || videos.length === 0) && (
         <Text color="gray.500">Nenhum video encontrado.</Text>
       )}
-      {videos?.length &&
+      {videos?.length > 0 &&
         videos?.map((video) => (
           <Box key={video.id} marginBottom="5">
             <Video moduleId={moduleId} moduleName={moduleName} video={video} />

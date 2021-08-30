@@ -3,6 +3,8 @@ import { colors } from '~/styles/colors';
 
 export const SITE_NAME = 'Stokei';
 
+export const ASPECT_RATIO_COURSES = 16 / 12;
+
 export const logoUrl = 'https://assets.stokei.com/logos/logo.png';
 export const logoIconUrl = 'https://assets.stokei.com/logos/icon.png';
 export const logoIconCleanUrl =

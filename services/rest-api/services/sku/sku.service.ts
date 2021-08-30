@@ -1,5 +1,6 @@
 import { PriceModel } from '~/services/@types/price';
 import { SkuModel } from '~/services/@types/sku';
+import { FindAllPayload } from '~/services/interfaces/find-all.payload';
 import { BaseService, BaseServiceConfig } from '../base-service';
 import { AddQuantitySkuDTO } from './dtos/add-quantity-sku.dto';
 import { WithdrawQuantitySkuDTO } from './dtos/withdraw-quantity-sku.dto';
@@ -50,10 +51,14 @@ export class SkuServiceRest extends BaseService {
     return null;
   }
 
-  async findAll(): Promise<SkuModel[]> {
+  async findAll(data?: {
+    page?: number;
+    limit?: number;
+    status?: string;
+  }): Promise<FindAllPayload<SkuModel>> {
     try {
-      const response = await this.client.get<SkuModel[]>(`/skus`);
-      if (response?.data && response?.data.length > 0) {
+      const response = await this.client.get<FindAllPayload<SkuModel>>(`/skus`);
+      if (response?.data) {
         return response.data;
       }
     } catch (error) {}

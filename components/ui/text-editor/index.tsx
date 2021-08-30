@@ -1,4 +1,10 @@
-import { Flex, FormControl, FormHelperText, FormLabel } from '@chakra-ui/react';
+import {
+  Flex,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Text
+} from '@chakra-ui/react';
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import stylesMarkdown from '~/components/ui/markdown/markdown.module.css';
 import styles from './style.module.css';
@@ -6,6 +12,7 @@ import styles from './style.module.css';
 export interface TextEditorProps {
   readonly id?: string;
   readonly label?: string;
+  readonly required?: boolean;
   readonly name?: string;
   readonly initialValue?: string;
   readonly helperMessage?: string;
@@ -19,6 +26,7 @@ export const TextEditor: React.FC<TextEditorProps> = forwardRef(
       id,
       label,
       name,
+      required = true,
       helperMessage,
       errorMessage,
       onChange,
@@ -42,7 +50,21 @@ export const TextEditor: React.FC<TextEditorProps> = forwardRef(
 
     return (
       <FormControl id={id} marginBottom={2}>
-        {label && <FormLabel>{label}</FormLabel>}
+        {label && (
+          <FormLabel>
+            {label}
+            {required && (
+              <Text
+                as="span"
+                marginLeft={3}
+                color="gray.500"
+                fontWeight="normal"
+              >
+                (Obrigatório)
+              </Text>
+            )}
+          </FormLabel>
+        )}
 
         <Flex
           className={

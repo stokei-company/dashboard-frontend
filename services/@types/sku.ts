@@ -21,7 +21,7 @@ export interface SkuModel {
   readonly keywords?: string[];
   readonly currency: string;
   readonly attributes?: object;
-  readonly active: boolean;
+  readonly status: string;
   readonly inventory?: Inventory;
   readonly canceledAt?: string;
   readonly updatedAt?: string;
