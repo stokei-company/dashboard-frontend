@@ -14,7 +14,7 @@ export default function Home({ subscriptions, ...props }) {
   return (
     <Layout>
       <Container flex="1" paddingY={10} flexDir="column">
-        <Header onSuccess={() => router.reload()} title="Alunos" />
+        <Header onSuccess={() => router.reload()} title="Assinaturas" />
         <ListSubscriptions subscriptions={subscriptions} />
       </Container>
     </Layout>

@@ -62,8 +62,9 @@ export const Video: React.FC<Props> = memo(({ video }) => {
             video.description && (
               <Flex
                 className={styles['description']}
-                alignItems="center"
+                alignItems="flex-start"
                 maxWidth="100px"
+                maxHeight="20px"
                 fontSize="xs"
                 isTruncated
               >
