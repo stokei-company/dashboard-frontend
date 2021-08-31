@@ -1,17 +1,21 @@
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { Flex, FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
-import { message, Upload } from "antd";
-import { UploadChangeParam } from "antd/lib/upload";
-import { UploadFile } from "antd/lib/upload/interface";
-import React, { ReactNode, useCallback, useState } from "react";
-import { useMemo } from "react";
-import { forwardRef } from "react";
-import styles from "./style.module.css";
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Flex, FormControl, FormHelperText, FormLabel } from '@chakra-ui/react';
+import { message, Upload } from 'antd';
+import { UploadChangeParam } from 'antd/lib/upload';
+import { UploadFile } from 'antd/lib/upload/interface';
+import React, { ReactNode, useCallback, useState } from 'react';
+import { useMemo } from 'react';
+import { forwardRef } from 'react';
+import styles from './style.module.css';
 
 function getBase64(img, callback) {
   const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
+  reader.addEventListener('load', () => callback(reader.result));
   reader.readAsDataURL(img);
+}
+
+function getFileURL(file: any): string {
+  return URL.createObjectURL(file);
 }
 
 export interface InputFileProps {
@@ -48,21 +52,20 @@ export const InputFile: React.FC<InputFileProps> = forwardRef(
 
     const handleChange = useCallback(
       (info: UploadChangeParam<UploadFile<any>>) => {
-        if (info.file.status === "uploading") {
+        if (info.file.status === 'uploading') {
           setLoading(true);
           return;
         }
-        if (info.file.status === "done") {
+        if (info.file.status === 'done') {
           onChange({ target: { files: [info.file.originFileObj] } });
           // Get this url from response in real world.
-          getBase64(info.file.originFileObj, (fileUrl) => {
-            if (onPreview) {
-              onPreview(fileUrl);
-            }
-            setFileName(info.file.name);
-            setPreviewUrl(fileUrl);
-            setLoading(false);
-          });
+          const fileURL = getFileURL(info.file.originFileObj);
+          if (onPreview) {
+            onPreview(fileURL);
+          }
+          setFileName(info.file.name);
+          setPreviewUrl(fileURL);
+          setLoading(false);
         }
       },
       [onChange, onPreview]
@@ -77,11 +80,11 @@ export const InputFile: React.FC<InputFileProps> = forwardRef(
           );
         }
         if (!isValid) {
-          message.error("Formato de arquivo não permitido!");
+          message.error('Formato de arquivo não permitido!');
         }
         const isValidSize = file.size / 5368709120 < 5; // 1024 * 1024 * 1024 * 5
         if (!isValidSize) {
-          message.error("O video deve ser menor que 5GB!");
+          message.error('O video deve ser menor que 5GB!');
         }
         return isValid && isValidSize;
       },
@@ -92,7 +95,7 @@ export const InputFile: React.FC<InputFileProps> = forwardRef(
       if (accept) {
         return accept;
       }
-      return formats?.join(",");
+      return formats?.join(',');
     }, [accept, formats]);
 
     return (
@@ -102,7 +105,7 @@ export const InputFile: React.FC<InputFileProps> = forwardRef(
         <Upload
           name="file"
           listType="picture-card"
-          className={styles["file-uploader"]}
+          className={styles['file-uploader']}
           accept={acceptFormatsString}
           showUploadList={false}
           beforeUpload={beforeUpload}
@@ -137,4 +140,4 @@ export const InputFile: React.FC<InputFileProps> = forwardRef(
     );
   }
 );
-InputFile.displayName = "InputFile";
+InputFile.displayName = 'InputFile';
