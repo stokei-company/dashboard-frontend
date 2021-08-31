@@ -59,7 +59,7 @@ export const InputFile: React.FC<InputFileProps> = forwardRef(
         if (info.file.status === 'done') {
           onChange({ target: { files: [info.file.originFileObj] } });
           // Get this url from response in real world.
-          const fileURL = getFileURL(info.file.originFileObj);
+          const fileURL = ''; //getFileURL(info.file.originFileObj);
           if (onPreview) {
             onPreview(fileURL);
           }
@@ -112,9 +112,9 @@ export const InputFile: React.FC<InputFileProps> = forwardRef(
           onChange={handleChange}
           {...props}
         >
-          {previewUrl ? (
+          {previewUrl || fileName ? (
             <Flex padding={2} width="full">
-              {previewElement ? previewElement(previewUrl) : fileName}
+              {/* previewElement ? previewElement(previewUrl) : */ fileName}
             </Flex>
           ) : (
             <Flex
