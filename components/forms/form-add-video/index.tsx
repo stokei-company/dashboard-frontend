@@ -1,14 +1,14 @@
-import { Flex, Heading } from "@chakra-ui/react";
-import { useFormik } from "formik";
-import React, { useContext, useState } from "react";
-import * as Yup from "yup";
-import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { InputFileImage } from "~/components/ui/input-file-image";
-import { InputFileVideo } from "~/components/ui/input-file-video";
-import { TextEditor } from "~/components/ui/text-editor";
-import { AlertsContext } from "~/contexts/alerts";
-import { CourseVideoServiceRest } from "~/services/rest-api/services/course-video/course-video.service";
+import { Flex, Heading } from '@chakra-ui/react';
+import { useFormik } from 'formik';
+import React, { useContext, useState } from 'react';
+import * as Yup from 'yup';
+import { Button } from '~/components/ui/button';
+import { Input } from '~/components/ui/input';
+import { InputFileImage } from '~/components/ui/input-file-image';
+import { InputFileVideo } from '~/components/ui/input-file-video';
+import { TextEditor } from '~/components/ui/text-editor';
+import { AlertsContext } from '~/contexts/alerts';
+import { CourseVideoServiceRest } from '~/services/rest-api/services/course-video/course-video.service';
 
 interface Props {
   readonly appId: string;
@@ -28,35 +28,35 @@ export const FormAddVideo: React.FC<Props> = ({
 
   const formik = useFormik({
     initialValues: {
-      title: "",
-      description: "",
+      title: '',
+      description: '',
       video: null,
       thumbnail: null,
-      videoUrl: "",
+      videoUrl: ''
     },
     validationSchema: Yup.object({
-      title: Yup.string().required("Obrigatório"),
-      description: Yup.string().required("Obrigatório"),
+      title: Yup.string().required('Obrigatório'),
+      description: Yup.string().required('Obrigatório')
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const formData = new FormData();
-        formData.append("title", values.title);
-        formData.append("description", values.description);
-        formData.append("video", values.video);
-        formData.append("thumbnail", values.thumbnail);
-        formData.append("videoUrl", values.videoUrl);
+        formData.append('title', values.title);
+        formData.append('description', values.description);
+        formData.append('video', values.video);
+        formData.append('thumbnail', values.thumbnail);
+        formData.append('videoUrl', values.videoUrl);
 
         const courseVideoService = new CourseVideoServiceRest({
           moduleId,
           appId,
-          onUploadProgress: (percent) => setPercentLoading(percent),
+          onUploadProgress: (percent) => setPercentLoading(percent)
         });
         const data = await courseVideoService.create(formData);
         if (data) {
           addAlert({
-            status: "success",
-            text: "Video adicionado com sucesso!",
+            status: 'success',
+            text: 'Video adicionado com sucesso!'
           });
           setSubmitting(false);
           onSuccess();
@@ -65,11 +65,11 @@ export const FormAddVideo: React.FC<Props> = ({
       } catch (error) {}
 
       addAlert({
-        status: "error",
-        text: "Erro ao adicionar este video!",
+        status: 'error',
+        text: 'Erro ao adicionar este video!'
       });
       setSubmitting(false);
-    },
+    }
   });
 
   return (
@@ -81,20 +81,34 @@ export const FormAddVideo: React.FC<Props> = ({
         <form
           onSubmit={formik.handleSubmit}
           style={{
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column'
           }}
         >
+          <Input
+            id="video"
+            label="Video"
+            type="file"
+            errorMessage={
+              formik.touched.video && formik.errors.video
+                ? 'Video inválido!'
+                : null
+            }
+            onChange={(event) =>
+              formik.setFieldValue('video', event.target.files[0] || '')
+            }
+          />
+
           <InputFileVideo
             id="video"
             label="Video"
             errorMessage={
               formik.touched.video && formik.errors.video
-                ? "Video inválido!"
+                ? 'Video inválido!'
                 : null
             }
             onChange={(event) =>
-              formik.setFieldValue("video", event.target.files[0] || "")
+              formik.setFieldValue('video', event.target.files[0] || '')
             }
           />
 
@@ -104,11 +118,11 @@ export const FormAddVideo: React.FC<Props> = ({
             aspectRatio={1920 / 1080}
             errorMessage={
               formik.touched.thumbnail && formik.errors.thumbnail
-                ? "Miniatura inválida!"
+                ? 'Miniatura inválida!'
                 : null
             }
             onChange={(event) =>
-              formik.setFieldValue("thumbnail", event.target.files[0] || "")
+              formik.setFieldValue('thumbnail', event.target.files[0] || '')
             }
           />
 
@@ -117,9 +131,9 @@ export const FormAddVideo: React.FC<Props> = ({
             name="title"
             label="Nome"
             placeholder="Nome"
-            borderColor={formik.errors.title && "red.400"}
+            borderColor={formik.errors.title && 'red.400'}
             errorMessage={formik.touched.title && formik.errors.title}
-            {...formik.getFieldProps("title")}
+            {...formik.getFieldProps('title')}
           />
 
           <TextEditor
@@ -129,8 +143,8 @@ export const FormAddVideo: React.FC<Props> = ({
             errorMessage={
               formik.touched.description && formik.errors.description
             }
-            {...formik.getFieldProps("description")}
-            onChange={(value) => formik.setFieldValue("description", value)}
+            {...formik.getFieldProps('description')}
+            onChange={(value) => formik.setFieldValue('description', value)}
           />
 
           <Flex>
