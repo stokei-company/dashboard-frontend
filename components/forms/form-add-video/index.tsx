@@ -85,20 +85,6 @@ export const FormAddVideo: React.FC<Props> = ({
             flexDirection: 'column'
           }}
         >
-          <Input
-            id="video"
-            label="Video"
-            type="file"
-            errorMessage={
-              formik.touched.video && formik.errors.video
-                ? 'Video inválido!'
-                : null
-            }
-            onChange={(event) =>
-              formik.setFieldValue('video', event.target.files[0] || '')
-            }
-          />
-
           <InputFileVideo
             id="video"
             label="Video"
@@ -107,9 +93,7 @@ export const FormAddVideo: React.FC<Props> = ({
                 ? 'Video inválido!'
                 : null
             }
-            onChange={(event) =>
-              formik.setFieldValue('video', event.target.files[0] || '')
-            }
+            onChange={(video) => formik.setFieldValue('video', video || '')}
           />
 
           <InputFileImage
