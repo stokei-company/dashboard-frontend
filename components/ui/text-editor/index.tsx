@@ -53,14 +53,14 @@ export const TextEditor: React.FC<TextEditorProps> = forwardRef(
         {label && (
           <FormLabel>
             {label}
-            {required && (
+            {!required && (
               <Text
                 as="span"
                 marginLeft={3}
                 color="gray.500"
                 fontWeight="normal"
               >
-                (Obrigatório)
+                (Opcional)
               </Text>
             )}
           </FormLabel>

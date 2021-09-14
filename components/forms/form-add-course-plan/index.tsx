@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import * as Yup from 'yup';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
-import { NumberInput } from '~/components/ui/input-number';
+import { InputNumber } from '~/components/ui/input-number';
 import { Select } from '~/components/ui/select';
 import { AlertsContext } from '~/contexts/alerts';
 import { CourseSkuServiceRest } from '~/services/rest-api/services/course-sku/course-sku.service';
@@ -144,7 +144,7 @@ export const FormAddCoursePlan: React.FC<Props> = ({
               </Heading>
 
               <Stack direction="row" spacing={5}>
-                <NumberInput
+                <InputNumber
                   id="recurringInterval"
                   name="recurringInterval"
                   placeholder="Intervalo de tempo"
@@ -194,7 +194,7 @@ export const FormAddCoursePlan: React.FC<Props> = ({
           </Select>
 
           {formik.values.inventoryType !== 'infinite' && (
-            <NumberInput
+            <InputNumber
               id="inventoryQuantity"
               name="inventoryQuantity"
               label="Quantidade"

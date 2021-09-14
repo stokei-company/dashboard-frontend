@@ -1,7 +1,10 @@
 export const formatCpf = (cpf: string): string => {
-  cpf = cpf.replace(/\D/g, '');
-  cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-  cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-  cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-  return cpf;
+  if (cpf.length >= 14) {
+    return cpf.slice(0, 14);
+  }
+  return cpf
+    .replace(/\D/g, '')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
 };

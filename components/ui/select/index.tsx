@@ -16,6 +16,7 @@ interface Props extends ChakraSelectProps {
 }
 
 export const Select: React.FC<Props> = ({
+  width,
   label,
   required = true,
   helperMessage,
@@ -23,19 +24,20 @@ export const Select: React.FC<Props> = ({
   ...props
 }) => {
   return (
-    <FormControl id={props.id} marginBottom={2}>
+    <FormControl id={props.id} marginBottom={2} width={width}>
       {label && (
         <FormLabel>
           {label}
-          {required && (
+          {!required && (
             <Text as="span" marginLeft={3} color="gray.500" fontWeight="normal">
-              (Obrigatório)
+              (Opcional)
             </Text>
           )}
         </FormLabel>
       )}
 
       <ChakraSelect
+        minHeight="50px"
         size="md"
         backgroundColor="white"
         _hover={{
@@ -43,6 +45,7 @@ export const Select: React.FC<Props> = ({
         }}
         focusBorderColor="green.600"
         borderRadius="sm"
+        width={width}
         {...props}
       />
 

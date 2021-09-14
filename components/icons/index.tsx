@@ -1,4 +1,10 @@
 import {
+  SolutionOutlined,
+  BankOutlined,
+  PhoneOutlined,
+  SmileOutlined
+} from '@ant-design/icons';
+import {
   FaArrowLeft,
   FaBars,
   FaBell,
@@ -18,8 +24,11 @@ import {
   FaInfo,
   FaMapMarker,
   FaMoneyBill,
+  FaMoneyCheck,
+  FaPhone,
   FaPlus,
   FaSignOutAlt,
+  FaSmile,
   FaStore,
   FaUser,
   FaVideo
@@ -27,7 +36,11 @@ import {
 
 export const PasswordShowIcon = FaEye;
 export const PasswordHideIcon = FaEyeSlash;
+export const InfoIcon = SolutionOutlined;
+export const ContactIcon = PhoneOutlined;
+export const BankAccountIcon = BankOutlined;
 export const EmailIcon = FaEnvelope;
+export const SmileIcon = SmileOutlined;
 export const UserIcon = FaUser;
 export const BackIcon = FaArrowLeft;
 export const MenuIcon = FaBars;

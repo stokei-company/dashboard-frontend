@@ -1,6 +1,7 @@
 import { AppModel } from '~/services/@types/app';
 import { FindAllPayload } from '~/services/interfaces/find-all.payload';
 import { BaseService, BaseServiceConfig } from '../base-service';
+import { CreateAppDTO } from './dtos/create-app.dto';
 
 export interface AppServiceConfig extends BaseServiceConfig {}
 
@@ -9,15 +10,23 @@ export class AppServiceRest extends BaseService {
     super(data);
   }
 
+  async create(data: CreateAppDTO): Promise<AppModel> {
+    try {
+      const response = await this.client.post<AppModel>(`/apps`, data);
+      if (response?.data) {
+        return response.data;
+      }
+    } catch (error) {}
+    return null;
+  }
+
   async loadInfos(): Promise<AppModel> {
     try {
       const response = await this.client.get<AppModel>(`/apps/infos`);
       if (response?.data) {
         return response.data;
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     return null;
   }
 

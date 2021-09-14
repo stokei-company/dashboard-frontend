@@ -1,12 +1,12 @@
-import { Flex } from "@chakra-ui/react";
-import { useFormik } from "formik";
-import React, { useContext } from "react";
-import * as Yup from "yup";
-import { Button } from "~/components/ui/button";
-import { NumberInput } from "~/components/ui/input-number";
-import { AlertsContext } from "~/contexts/alerts";
-import { SkuModel } from "~/services/@types/sku";
-import { SkuServiceRest } from "~/services/rest-api/services/sku/sku.service";
+import { Flex } from '@chakra-ui/react';
+import { useFormik } from 'formik';
+import React, { useContext } from 'react';
+import * as Yup from 'yup';
+import { Button } from '~/components/ui/button';
+import { InputNumber } from '~/components/ui/input-number';
+import { AlertsContext } from '~/contexts/alerts';
+import { SkuModel } from '~/services/@types/sku';
+import { SkuServiceRest } from '~/services/rest-api/services/sku/sku.service';
 
 interface Props {
   readonly sku: SkuModel;
@@ -24,10 +24,10 @@ export const FormUpdateSkuQuantity: React.FC<Props> = ({
 
   const formik = useFormik({
     initialValues: {
-      quantity: sku?.inventory?.quantity || 0,
+      quantity: sku?.inventory?.quantity || 0
     },
     validationSchema: Yup.object({
-      quantity: Yup.number(),
+      quantity: Yup.number()
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
@@ -42,8 +42,8 @@ export const FormUpdateSkuQuantity: React.FC<Props> = ({
         }
         if (data) {
           addAlert({
-            status: "success",
-            text: "Quantidade atualizada com sucesso!",
+            status: 'success',
+            text: 'Quantidade atualizada com sucesso!'
           });
           setSubmitting(false);
           onSuccess();
@@ -52,11 +52,11 @@ export const FormUpdateSkuQuantity: React.FC<Props> = ({
       } catch (error) {}
 
       addAlert({
-        status: "error",
-        text: "Erro ao atualizar a quantidade!",
+        status: 'error',
+        text: 'Erro ao atualizar a quantidade!'
       });
       setSubmitting(false);
-    },
+    }
   });
 
   return (
@@ -65,23 +65,23 @@ export const FormUpdateSkuQuantity: React.FC<Props> = ({
         <form
           onSubmit={formik.handleSubmit}
           style={{
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column'
           }}
         >
-          <NumberInput
+          <InputNumber
             id="quantity"
             name="quantity"
             label="Quantidade"
             placeholder="Quantidade"
-            borderColor={formik.errors.quantity && "red.400"}
+            borderColor={formik.errors.quantity && 'red.400'}
             errorMessage={formik.touched.quantity && formik.errors.quantity}
             min={1}
             step={1}
             defaultValue={sku?.inventory?.quantity || 0}
             value={formik.values.quantity}
             onChange={(value) =>
-              formik.setFieldValue("quantity", parseInt(value))
+              formik.setFieldValue('quantity', parseInt(value))
             }
           />
 

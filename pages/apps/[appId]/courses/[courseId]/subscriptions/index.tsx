@@ -5,6 +5,7 @@ import { Container } from '~/components/layouts/container';
 import { Layout } from '~/components/layouts/courses/layout';
 import { Header } from '~/components/pages/apps/courses/subscriptions/header';
 import { ListSubscriptions } from '~/components/pages/apps/courses/subscriptions/list-subscriptions';
+import { clientRestApi } from '~/services/rest-api';
 import { CourseServiceRest } from '~/services/rest-api/services/course/course.service';
 import { desconnectedUrl } from '~/utils/constants';
 
@@ -26,9 +27,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     ? context?.params?.courseId + ''
     : null;
 
-  const courseService = new CourseServiceRest({
+  const courseService = clientRestApi({
     context
-  });
+  }).courses();
+
   const appId = courseService.appId;
 
   if (!courseId || !appId) {
@@ -47,10 +49,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const status = context?.query?.status ? context?.query?.status + '' : null;
-  const subscriptions = await courseService.subscriptions(courseId, {
-    status: `${status}:desc`,
-    createdAt: ':desc'
-  });
+  const subscriptions = await courseService
+    .subscriptions({ courseId })
+    .findAll({
+      status: `${status}:desc`,
+      createdAt: ':desc'
+    });
   return {
     props: {
       subscriptions: subscriptions?.items || [],
