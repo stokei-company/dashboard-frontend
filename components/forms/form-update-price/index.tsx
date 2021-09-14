@@ -1,14 +1,14 @@
-import { Flex, Stack, Text } from "@chakra-ui/react";
-import { useFormik } from "formik";
-import React, { useContext } from "react";
-import * as Yup from "yup";
-import { Button } from "~/components/ui/button";
-import { NumberInput } from "~/components/ui/input-number";
-import { AlertsContext } from "~/contexts/alerts";
-import { PriceModel } from "~/services/@types/price";
-import { PriceServiceRest } from "~/services/rest-api/services/price/price.service";
-import { colors } from "~/styles/colors";
-import { convertToMoney } from "~/utils/convert-to-money";
+import { Flex, Stack, Text } from '@chakra-ui/react';
+import { useFormik } from 'formik';
+import React, { useContext } from 'react';
+import * as Yup from 'yup';
+import { Button } from '~/components/ui/button';
+import { InputNumber } from '~/components/ui/input-number';
+import { AlertsContext } from '~/contexts/alerts';
+import { PriceModel } from '~/services/@types/price';
+import { PriceServiceRest } from '~/services/rest-api/services/price/price.service';
+import { colors } from '~/styles/colors';
+import { convertToMoney } from '~/utils/convert-to-money';
 
 interface Props {
   readonly price: PriceModel;
@@ -26,10 +26,10 @@ export const FormUpdatePrice: React.FC<Props> = ({
 
   const formik = useFormik({
     initialValues: {
-      percentageOff: 0,
+      percentageOff: 0
     },
     validationSchema: Yup.object({
-      percentageOff: Yup.number(),
+      percentageOff: Yup.number()
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
@@ -48,15 +48,15 @@ export const FormUpdatePrice: React.FC<Props> = ({
           data = await priceService.addDiscount(price.id, {
             discount: {
               name: `%${(percentageOff / 100).toFixed(2)} OFF`,
-              percentageOff,
-            },
+              percentageOff
+            }
           });
         }
 
         if (data) {
           addAlert({
-            status: "success",
-            text: "Preço alterado com sucesso!",
+            status: 'success',
+            text: 'Preço alterado com sucesso!'
           });
           setSubmitting(false);
           onSuccess();
@@ -65,11 +65,11 @@ export const FormUpdatePrice: React.FC<Props> = ({
       } catch (error) {}
 
       addAlert({
-        status: "error",
-        text: "Erro ao alterar o preço!",
+        status: 'error',
+        text: 'Erro ao alterar o preço!'
       });
       setSubmitting(false);
-    },
+    }
   });
 
   return (
@@ -78,8 +78,8 @@ export const FormUpdatePrice: React.FC<Props> = ({
         <form
           onSubmit={formik.handleSubmit}
           style={{
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column'
           }}
         >
           <Stack direction="row" alignItems="center">
@@ -93,7 +93,7 @@ export const FormUpdatePrice: React.FC<Props> = ({
             )}
           </Stack>
 
-          <NumberInput
+          <InputNumber
             id="percentageOff"
             name="percentageOff"
             label="Desconto %"
@@ -109,11 +109,11 @@ export const FormUpdatePrice: React.FC<Props> = ({
             }
             onChange={(value) =>
               formik.setFieldValue(
-                "percentageOff",
+                'percentageOff',
                 parseFloat(value) > 100 ? 100 : parseFloat(value)
               )
             }
-            borderColor={formik.errors.percentageOff && "red.400"}
+            borderColor={formik.errors.percentageOff && 'red.400'}
             errorMessage={
               formik.touched.percentageOff && formik.errors.percentageOff
             }

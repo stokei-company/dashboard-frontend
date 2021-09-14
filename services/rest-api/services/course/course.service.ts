@@ -1,7 +1,29 @@
 import { CourseModel } from '~/services/@types/course';
-import { SubscriptionModel } from '~/services/@types/subscription';
-import { FindAllPayload } from '~/services/interfaces/find-all.payload';
 import { BaseService, BaseServiceConfig } from '../base-service';
+import {
+  CourseMaterialServiceConfig,
+  CourseMaterialServiceRest
+} from '../course-material/course-material.service';
+import {
+  CourseModuleServiceConfig,
+  CourseModuleServiceRest
+} from '../course-module/course-module.service';
+import {
+  CourseSkuServiceConfig,
+  CourseSkuServiceRest
+} from '../course-sku/course-sku.service';
+import {
+  CourseSubscriptionServiceConfig,
+  CourseSubscriptionServiceRest
+} from '../course-subscription/course-subscription.service';
+import {
+  CourseUserServiceConfig,
+  CourseUserServiceRest
+} from '../course-user/course-user.service';
+import {
+  CourseVideoServiceConfig,
+  CourseVideoServiceRest
+} from '../course-video/course-video.service';
 import { CreateCourseDTO } from './dtos/create-course.dto';
 import { UpdateCourseDTO } from './dtos/update-course.dto';
 
@@ -10,6 +32,25 @@ export interface CourseServiceConfig extends BaseServiceConfig {}
 export class CourseServiceRest extends BaseService {
   constructor(data: CourseServiceConfig) {
     super(data);
+  }
+
+  materials(config: CourseMaterialServiceConfig) {
+    return new CourseMaterialServiceRest(config);
+  }
+  modules(config: CourseModuleServiceConfig) {
+    return new CourseModuleServiceRest(config);
+  }
+  videos(config: CourseVideoServiceConfig) {
+    return new CourseVideoServiceRest(config);
+  }
+  skus(config: CourseSkuServiceConfig) {
+    return new CourseSkuServiceRest(config);
+  }
+  users(config: CourseUserServiceConfig) {
+    return new CourseUserServiceRest(config);
+  }
+  subscriptions(config: CourseSubscriptionServiceConfig) {
+    return new CourseSubscriptionServiceRest(config);
   }
 
   async create(data: CreateCourseDTO | FormData): Promise<CourseModel> {
@@ -61,34 +102,6 @@ export class CourseServiceRest extends BaseService {
     try {
       const response = await this.client.get<CourseModel[]>(`/courses`);
       if (response?.data && response?.data.length > 0) {
-        return response.data;
-      }
-    } catch (error) {}
-    return null;
-  }
-
-  async subscriptions(
-    courseId: string,
-    data?: {
-      limit?: string;
-      page?: string;
-      status?: string;
-      type?: string;
-      createdAt?: string;
-    }
-  ): Promise<FindAllPayload<SubscriptionModel>> {
-    try {
-      const dataParams = Object.entries(data || {});
-      let params = '';
-      if (dataParams.length > 0) {
-        params = dataParams
-          .map(([key, value]) => `${key}=${value || ''}`)
-          .join('&');
-      }
-      const response = await this.client.get<FindAllPayload<SubscriptionModel>>(
-        `/courses/${courseId}/subscriptions${params ? '?' + params : ''}`
-      );
-      if (response?.data) {
         return response.data;
       }
     } catch (error) {}

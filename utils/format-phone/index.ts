@@ -11,3 +11,7 @@ export const formatPhone = (value: string): string => {
   }
   return r;
 };
+
+export const clearPhone = (value: string): string => {
+  return (value || '').replace(/\D/g, '');
+};

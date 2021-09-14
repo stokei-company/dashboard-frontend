@@ -19,21 +19,22 @@ interface Props extends ChakraNumberInputProps {
   readonly errorMessage?: string;
 }
 
-export const NumberInput: React.FC<Props> = ({
+export const InputNumber: React.FC<Props> = ({
   label,
+  width,
   required = true,
   helperMessage,
   errorMessage,
   ...props
 }) => {
   return (
-    <FormControl id={props.id} marginBottom={2}>
+    <FormControl id={props.id} marginBottom={2} width={width}>
       {label && (
         <FormLabel>
           {label}
-          {required && (
+          {!required && (
             <Text as="span" marginLeft={3} color="gray.500" fontWeight="normal">
-              (Obrigatório)
+              (Opcional)
             </Text>
           )}
         </FormLabel>
@@ -48,6 +49,7 @@ export const NumberInput: React.FC<Props> = ({
         focusBorderColor="green.600"
         borderRadius="sm"
         allowMouseWheel
+        width={width}
         {...props}
       >
         <NumberInputField

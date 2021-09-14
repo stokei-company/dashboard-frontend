@@ -13,6 +13,16 @@ a:active {
   color: #24615e;
 }
 
+.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon,
+.ant-steps-item-custom.ant-steps-item-process
+  .ant-steps-item-icon
+  > .ant-steps-icon {
+  color: #24615e !important;
+}
+.ant-steps-navigation .ant-steps-item::before {
+  background-color: #24615e !important;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
