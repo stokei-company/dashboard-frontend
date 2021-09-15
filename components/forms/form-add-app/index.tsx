@@ -1,15 +1,9 @@
-import { Flex, Stack, Icon, Heading, Text } from '@chakra-ui/react';
+import { Flex, Heading, Icon, Stack, Text } from '@chakra-ui/react';
 import { Steps } from 'antd';
 import { useFormik } from 'formik';
 import React, { useCallback, useContext } from 'react';
 import * as Yup from 'yup';
-import {
-  BankAccountIcon,
-  ContactIcon,
-  EmailIcon,
-  InfoIcon,
-  SmileIcon
-} from '~/components/icons';
+import { BankAccountIcon, ContactIcon, InfoIcon } from '~/components/icons';
 import { Button, ButtonOutlined } from '~/components/ui/button';
 import {
   Input,
@@ -49,6 +43,22 @@ export const Header: React.FC<HeaderProps> = ({
   );
 };
 
+const lengthInputs = {
+  cpf: { min: 14, max: 14 },
+  cnpj: { min: 18, max: 18 },
+  nickname: { min: 3, max: 50 },
+  bankAccountNumber: { min: 1, max: 13 },
+  bankAccountCheckDigit: { min: 1, max: 2 },
+  bankBankCode: { min: 3, max: 3 },
+  bankBranchCheckDigit: { min: 1, max: 1 },
+  bankBranchNumber: { min: 2, max: 4 },
+  bankHolderDocument: { min: 14, max: 18 },
+  bankHolderName: { min: 1, max: 30 }
+};
+
+const textMinLength = (min: number) => `Deve ter no mínimo ${min} caracteres!`;
+const textMaxLength = (max: number) => `Deve ter no máximo ${max} caracteres!`;
+
 interface FormAddAppProps {
   readonly onSuccess: () => any;
 }
@@ -66,6 +76,15 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
 
   const handlePrev = useCallback(() => {
     setCurrent((curr) => curr - 1);
+  }, []);
+
+  const handleAppIsValid = useCallback(async (text: string) => {
+    if (!text) {
+      return false;
+    }
+    const appService = clientRestApi().apps();
+    const response = await appService.exists({ nickname: text });
+    return !response;
   }, []);
 
   const formik = useFormik({
@@ -90,16 +109,97 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
     },
     validationSchema: Yup.object({
       name: Yup.string().required('Obrigatório'),
-      nickname: Yup.string().required('Obrigatório'),
+      nickname: Yup.string()
+        .min(
+          lengthInputs.nickname.min,
+          textMinLength(lengthInputs.nickname.min)
+        )
+        .max(
+          lengthInputs.nickname.max,
+          textMaxLength(lengthInputs.nickname.max)
+        )
+        .required('Obrigatório'),
       email: Yup.string().email('Formato inválido').required('Obrigatório'),
-      bankAccountCheckDigit: Yup.string(),
-      bankAccountNumber: Yup.string().required('Obrigatório'),
+      documentNumber: Yup.string()
+        .min(
+          lengthInputs.bankHolderDocument.min,
+          textMinLength(lengthInputs.bankHolderDocument.min)
+        )
+        .max(
+          lengthInputs.bankHolderDocument.max,
+          textMaxLength(lengthInputs.bankHolderDocument.max)
+        )
+        .required('Obrigatório'),
+      bankAccountCheckDigit: Yup.string()
+        .min(
+          lengthInputs.bankAccountCheckDigit.min,
+          textMinLength(lengthInputs.bankAccountCheckDigit.min)
+        )
+        .max(
+          lengthInputs.bankAccountCheckDigit.max,
+          textMaxLength(lengthInputs.bankAccountCheckDigit.max)
+        )
+        .required('Obrigatório'),
+      bankAccountNumber: Yup.string()
+        .min(
+          lengthInputs.bankAccountNumber.min,
+          textMinLength(lengthInputs.bankAccountNumber.min)
+        )
+        .max(
+          lengthInputs.bankAccountNumber.max,
+          textMaxLength(lengthInputs.bankAccountNumber.max)
+        )
+        .required('Obrigatório'),
       bankAccountType: Yup.string().required('Obrigatório'),
-      bankBankCode: Yup.string().required('Obrigatório'),
-      bankBranchCheckDigit: Yup.string(),
-      bankBranchNumber: Yup.string().required('Obrigatório'),
-      bankHolderDocument: Yup.string().required('Obrigatório'),
-      bankHolderName: Yup.string().required('Obrigatório')
+      bankBankCode: Yup.string()
+        .min(
+          lengthInputs.bankBankCode.min,
+          textMinLength(lengthInputs.bankBankCode.min)
+        )
+        .max(
+          lengthInputs.bankBankCode.max,
+          textMaxLength(lengthInputs.bankBankCode.max)
+        )
+        .required('Obrigatório'),
+      bankBranchCheckDigit: Yup.string()
+        .min(
+          lengthInputs.bankBranchCheckDigit.min,
+          textMinLength(lengthInputs.bankBranchCheckDigit.min)
+        )
+        .max(
+          lengthInputs.bankBranchCheckDigit.max,
+          textMaxLength(lengthInputs.bankBranchCheckDigit.max)
+        ),
+      bankBranchNumber: Yup.string()
+        .min(
+          lengthInputs.bankBranchNumber.min,
+          textMinLength(lengthInputs.bankBranchNumber.min)
+        )
+        .max(
+          lengthInputs.bankBranchNumber.max,
+          textMaxLength(lengthInputs.bankBranchNumber.max)
+        )
+        .required('Obrigatório'),
+      bankHolderDocument: Yup.string()
+        .min(
+          lengthInputs.bankHolderDocument.min,
+          textMinLength(lengthInputs.bankHolderDocument.min)
+        )
+        .max(
+          lengthInputs.bankHolderDocument.max,
+          textMaxLength(lengthInputs.bankHolderDocument.max)
+        )
+        .required('Obrigatório'),
+      bankHolderName: Yup.string()
+        .min(
+          lengthInputs.bankHolderName.min,
+          textMinLength(lengthInputs.bankHolderName.min)
+        )
+        .max(
+          lengthInputs.bankHolderName.max,
+          textMaxLength(lengthInputs.bankHolderName.max)
+        )
+        .required('Obrigatório')
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
@@ -120,7 +220,10 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
             bankCode: values.bankBankCode,
             branchCheckDigit: values.bankBranchCheckDigit,
             branchNumber: values.bankBranchNumber,
-            holderDocument: values.bankHolderDocument,
+            holderDocument:
+              values.bankHolderDocument?.length > lengthInputs.cpf.max
+                ? formatCnpj(values.bankHolderDocument)
+                : formatCpf(values.bankHolderDocument),
             holderName: values.bankHolderName
           },
           phone: {
@@ -142,7 +245,7 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
 
       addAlert({
         status: 'error',
-        text: 'Erro ao sua aplicação, verifique os seus dados!'
+        text: 'Erro ao criar sua aplicação, verifique os seus dados!'
       });
       setSubmitting(false);
     }
@@ -176,10 +279,11 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
             name="nickname"
             label="Nome de usuário"
             placeholder="meuapp"
-            borderColor={
-              formik.touched.nickname && formik.errors.nickname && 'red.400'
-            }
+            minLength={lengthInputs.nickname.min}
+            maxLength={lengthInputs.nickname.max}
+            borderColor={formik.errors.nickname && 'red.400'}
             errorMessage={formik.touched.nickname && formik.errors.nickname}
+            onValidate={(text) => handleAppIsValid(text)}
             {...formik.getFieldProps('nickname')}
             onChange={(e) =>
               formik.setFieldValue(
@@ -192,9 +296,7 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
           <Select
             name="country"
             label="País"
-            borderColor={
-              formik.touched.country && formik.errors.country && 'red.400'
-            }
+            borderColor={formik.errors.country && 'red.400'}
             errorMessage={formik.touched.country && formik.errors.country}
             {...formik.getFieldProps('country')}
           >
@@ -206,11 +308,7 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
               width="150px"
               name="documentType"
               label="Documento"
-              borderColor={
-                formik.touched.documentType &&
-                formik.errors.documentType &&
-                'red.400'
-              }
+              borderColor={formik.errors.documentType && 'red.400'}
               errorMessage={
                 formik.touched.documentType && formik.errors.documentType
               }
@@ -223,16 +321,14 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
             <Input
               name="documentNumber"
               label="Número do documento"
+              minLength={lengthInputs[formik.values.documentType]?.min}
+              maxLength={lengthInputs[formik.values.documentType]?.max}
               placeholder={
                 formik.values.documentType === 'cnpj'
                   ? '00.000.000/0000-00'
                   : '000.000.000-00'
               }
-              borderColor={
-                formik.touched.documentNumber &&
-                formik.errors.documentNumber &&
-                'red.400'
-              }
+              borderColor={formik.errors.documentNumber && 'red.400'}
               errorMessage={
                 formik.touched.documentNumber && formik.errors.documentNumber
               }
@@ -264,12 +360,9 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
               name="bankAccountNumber"
               label="Número da conta"
               placeholder="0000000"
-              maxLength={13}
-              borderColor={
-                formik.touched.bankAccountNumber &&
-                formik.errors.bankAccountNumber &&
-                'red.400'
-              }
+              minLength={lengthInputs.bankAccountNumber.min}
+              maxLength={lengthInputs.bankAccountNumber.max}
+              borderColor={formik.errors.bankAccountNumber && 'red.400'}
               errorMessage={
                 formik.touched.bankAccountNumber &&
                 formik.errors.bankAccountNumber
@@ -279,8 +372,9 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
             <Input
               name="bankAccountCheckDigit"
               label="Digíto verificador da conta"
-              placeholder="00"
-              maxLength={2}
+              placeholder="0"
+              minLength={lengthInputs.bankAccountCheckDigit.min}
+              maxLength={lengthInputs.bankAccountCheckDigit.max}
               borderColor={
                 formik.touched.bankAccountCheckDigit &&
                 formik.errors.bankAccountCheckDigit &&
@@ -296,11 +390,7 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
           <Select
             name="bankAccountType"
             label="Tipo da conta"
-            borderColor={
-              formik.touched.bankAccountType &&
-              formik.errors.bankAccountType &&
-              'red.400'
-            }
+            borderColor={formik.errors.bankAccountType && 'red.400'}
             errorMessage={
               formik.touched.bankAccountType && formik.errors.bankAccountType
             }
@@ -319,12 +409,9 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
             name="bankBankCode"
             label="Codigo do banco"
             placeholder="000"
-            maxLength={3}
-            borderColor={
-              formik.touched.bankBankCode &&
-              formik.errors.bankBankCode &&
-              'red.400'
-            }
+            minLength={lengthInputs.bankBankCode.min}
+            maxLength={lengthInputs.bankBankCode.max}
+            borderColor={formik.errors.bankBankCode && 'red.400'}
             errorMessage={
               formik.touched.bankBankCode && formik.errors.bankBankCode
             }
@@ -335,12 +422,9 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
               name="bankBranchNumber"
               label="Número da agência"
               placeholder="0000"
-              maxLength={4}
-              borderColor={
-                formik.touched.bankBranchNumber &&
-                formik.errors.bankBranchNumber &&
-                'red.400'
-              }
+              minLength={lengthInputs.bankBranchNumber.min}
+              maxLength={lengthInputs.bankBranchNumber.max}
+              borderColor={formik.errors.bankBranchNumber && 'red.400'}
               errorMessage={
                 formik.touched.bankBranchNumber &&
                 formik.errors.bankBranchNumber
@@ -349,15 +433,12 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
             />
             <Input
               required={false}
-              name="branchCheckDigit"
+              name="bankBranchCheckDigit"
               label="Digito verificador da agência"
               placeholder="0"
-              maxLength={1}
-              borderColor={
-                formik.touched.bankBranchCheckDigit &&
-                formik.errors.bankBranchCheckDigit &&
-                'red.400'
-              }
+              minLength={lengthInputs.bankBranchCheckDigit.min}
+              maxLength={lengthInputs.bankBranchCheckDigit.max}
+              borderColor={formik.errors.bankBranchCheckDigit && 'red.400'}
               errorMessage={
                 formik.touched.bankBranchCheckDigit &&
                 formik.errors.bankBranchCheckDigit
@@ -369,37 +450,32 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
             name="bankHolderDocument"
             label="CPF/CNPJ"
             placeholder="000.000.000-00"
-            borderColor={
-              formik.touched.bankHolderDocument &&
-              formik.errors.bankHolderDocument &&
-              'red.400'
-            }
+            minLength={lengthInputs.bankHolderDocument.min}
+            maxLength={lengthInputs.bankHolderDocument.max}
+            borderColor={formik.errors.bankHolderDocument && 'red.400'}
             errorMessage={
               formik.touched.bankHolderDocument &&
               formik.errors.bankHolderDocument
             }
             helperMessage="Documento identificador do titular da conta"
             {...formik.getFieldProps('bankHolderDocument')}
-            onChange={(e) =>
+            onChange={(e) => {
               formik.setFieldValue(
                 'bankHolderDocument',
-                e.target.value?.length >= 14
+                e.target.value?.length > lengthInputs.cpf.max
                   ? formatCnpj(e.target.value)
                   : formatCpf(e.target.value)
-              )
-            }
+              );
+            }}
           />
           <Input
             name="bankHolderName"
             label="Nome completo/Nome fantasia"
             placeholder="Nome completo ou nome fantasia"
             helperMessage="Nome completo (se pessoa física) ou razão social (se pessoa jurídica)."
-            maxLength={30}
-            borderColor={
-              formik.touched.bankHolderName &&
-              formik.errors.bankHolderName &&
-              'red.400'
-            }
+            minLength={lengthInputs.bankHolderName.min}
+            maxLength={lengthInputs.bankHolderName.max}
+            borderColor={formik.errors.bankHolderName && 'red.400'}
             errorMessage={
               formik.touched.bankHolderName && formik.errors.bankHolderName
             }
@@ -415,9 +491,7 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
         <Stack direction="column" spacing={5}>
           <InputPhone
             label="Telefone de contato"
-            borderColor={
-              formik.touched.email && formik.errors.email && 'red.400'
-            }
+            borderColor={formik.errors.email && 'red.400'}
             errorMessage={formik.touched.email && formik.errors.email}
             onChange={(data) => handleChangePhone(data)}
           />
@@ -425,9 +499,7 @@ export const FormAddApp: React.FC<FormAddAppProps> = ({
             name="email"
             label="E-mail de contato"
             placeholder="meuapp@email.com"
-            borderColor={
-              formik.touched.email && formik.errors.email && 'red.400'
-            }
+            borderColor={formik.errors.email && 'red.400'}
             errorMessage={formik.touched.email && formik.errors.email}
             {...formik.getFieldProps('email')}
           />

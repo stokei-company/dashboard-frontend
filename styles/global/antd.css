@@ -1,5 +1,10 @@
 @import '~antd/dist/antd.css';
 
-.antd-img-crop-modal, .ant-modal-mask{
-    z-index: 2000;
+.antd-img-crop-modal,
+.ant-modal-mask {
+  z-index: 2000;
+}
+
+.ant-upload.ant-upload-select-picture-card {
+  margin-bottom: 0;
 }

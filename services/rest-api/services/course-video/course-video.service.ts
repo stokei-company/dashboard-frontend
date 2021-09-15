@@ -1,5 +1,6 @@
 import { VideoModel } from '~/services/@types/video';
 import { FindAllPayload } from '~/services/interfaces/find-all.payload';
+import { convertObjectToParams } from '~/utils/convert-object-to-params';
 import { BaseService, BaseServiceConfig } from '../base-service';
 import { CreateCourseVideoDTO } from './dtos/create-course-video.dto';
 import { UpdateCourseVideoDTO } from './dtos/update-course-video.dto';
@@ -77,22 +78,16 @@ export class CourseVideoServiceRest extends BaseService {
     createdAt?: string;
   }): Promise<FindAllPayload<VideoModel>> {
     try {
-      const requestData = Object.entries(data || {});
-      const params =
-        requestData.length > 0
-          ? requestData.map(([key, value]) => `${key}=${value || ''}`).join('&')
-          : '';
+      const params = convertObjectToParams(data);
       const response = await this.client.get<FindAllPayload<VideoModel>>(
         `/modules/${this.moduleId}/videos${
-          requestData?.length ? '?' + params : ''
+          params?.exists ? '?' + params.params : ''
         }`
       );
       if (response?.data) {
         return response.data;
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     return null;
   }
 }

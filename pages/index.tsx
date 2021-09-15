@@ -2,10 +2,10 @@ import { Flex } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { Container } from '~/components/layouts/container';
 import { Layout } from '~/components/layouts/root/layout';
-import { AddAppBox, AddAppCard } from '~/components/pages/home/add-app';
+import { AddAppBox } from '~/components/pages/home/add-app';
 import { ListApps } from '~/components/pages/home/list-apps';
-import { Card } from '~/components/ui/card';
 import { AppModel } from '~/services/@types/app';
+import { clientRestApi } from '~/services/rest-api';
 import { AppServiceRest } from '~/services/rest-api/services/app/app.service';
 
 interface Props {
@@ -31,7 +31,7 @@ export default function Home({ apps, ...props }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const appService = new AppServiceRest({ context });
+  const appService = clientRestApi({ context }).apps();
   const accessToken = appService.accessToken;
 
   if (!accessToken) {

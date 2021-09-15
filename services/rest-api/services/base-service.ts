@@ -14,6 +14,7 @@ export class BaseService {
   readonly appId?: string;
   readonly accessToken?: string;
   readonly client: RestClient;
+  readonly baseConfig: BaseServiceConfig;
 
   constructor(data: BaseServiceConfig) {
     this.context = data.context;
@@ -24,6 +25,8 @@ export class BaseService {
       appId: this.appId,
       onUploadProgress: data.onUploadProgress
     });
+
+    this.baseConfig = data || {};
   }
 
   private extractAppId(): string {

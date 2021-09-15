@@ -6,6 +6,7 @@ import { UserAvatar } from '~/components/ui/user-avatar';
 import { CourseContext } from '~/contexts/course';
 import { useRequest } from '~/hooks/use-request';
 import { SubscriptionModel } from '~/services/@types/subscription';
+import { clientRestApi } from '~/services/rest-api';
 import { CourseSubscriptionServiceRest } from '~/services/rest-api/services/course-subscription/course-subscription.service';
 import { colors } from '~/styles/colors';
 import { differenceDate, formatDate } from '~/utils/format-date';
@@ -67,10 +68,11 @@ export const Subscription: React.FC<Props> = memo(({ subscription }) => {
   const router = useRouter();
   const { app, course } = useContext(CourseContext);
 
-  const courseSubscriptionService = new CourseSubscriptionServiceRest({
-    appId: app?.id,
-    courseId: course?.id
-  });
+  const courseSubscriptionService = clientRestApi({
+    appId: app?.id
+  })
+    .courses()
+    .subscriptions({ courseId: course?.id });
 
   const {
     loading: loadingCancelSubscription,

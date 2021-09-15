@@ -15,13 +15,17 @@ import React, {
   ChangeEvent,
   forwardRef,
   ReactNode,
+  useCallback,
   useRef,
   useState
 } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import {
   EmailIcon,
+  ErrorIcon,
   PasswordHideIcon,
-  PasswordShowIcon
+  PasswordShowIcon,
+  SuccessIcon
 } from '~/components/icons';
 import { clearPhone, formatPhone } from '~/utils/format-phone';
 import Select from '../select';
@@ -34,6 +38,7 @@ export interface InputProps extends ChakraInputProps {
   readonly rightElement?: ReactNode;
   readonly helperMessage?: string;
   readonly errorMessage?: string;
+  readonly onValidate?: (text: string) => Promise<boolean>;
 }
 
 export const Input: React.FC<InputProps> = forwardRef(
@@ -46,10 +51,39 @@ export const Input: React.FC<InputProps> = forwardRef(
       rightElement,
       helperMessage,
       errorMessage,
+      borderColor,
+      onChange,
+      onValidate,
       ...props
     },
     ref
   ) => {
+    const [isValid, setIsValid] = useState(null);
+    const inputRef = useRef<any>('');
+    const debounced = useDebouncedCallback(
+      async (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e?.target?.value;
+        if (onValidate) {
+          const valid = await onValidate(value);
+          setIsValid(valid);
+        }
+      },
+      500
+    );
+
+    const handleChange = useCallback(
+      async (e: ChangeEvent<HTMLInputElement>) => {
+        inputRef.current = e?.target?.value;
+        if (onChange) {
+          onChange(e);
+        }
+        if (onValidate) {
+          debounced(e);
+        }
+      },
+      [debounced, onValidate, onChange]
+    );
+
     return (
       <FormControl id={props.id} marginBottom={2} width={width}>
         {label && (
@@ -79,7 +113,6 @@ export const Input: React.FC<InputProps> = forwardRef(
             </InputLeftElement>
           )}
           <ChakraInput
-            ref={ref || props.ref}
             width={width}
             height="50px"
             minHeight="50px"
@@ -90,16 +123,29 @@ export const Input: React.FC<InputProps> = forwardRef(
             focusBorderColor="green.600"
             borderRadius="sm"
             {...props}
+            ref={inputRef}
+            borderColor={
+              isValid === null
+                ? borderColor
+                : isValid === false
+                ? 'red.500'
+                : 'inherit'
+            }
+            onChange={handleChange}
           />
-          {rightElement && (
-            <InputRightElement
-              height="full"
-              alignItems="center"
-              justifyContent="center"
-            >
-              {rightElement}
-            </InputRightElement>
-          )}
+          <InputRightElement
+            height="full"
+            alignItems="center"
+            justifyContent="center"
+          >
+            {isValid === null ? (
+              rightElement
+            ) : isValid === true ? (
+              <Icon as={SuccessIcon} color="green.500" />
+            ) : (
+              <Icon as={ErrorIcon} color="red.500" />
+            )}
+          </InputRightElement>
         </InputGroup>
 
         {errorMessage && (

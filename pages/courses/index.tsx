@@ -3,7 +3,7 @@ import { Container } from '~/components/layouts/container';
 import { Layout } from '~/components/layouts/root/layout';
 import { Header } from '~/components/pages/courses/home/header';
 import { ListCourses } from '~/components/pages/courses/home/list-courses';
-import { MeServiceRest } from '~/services/rest-api/services/me/me.service';
+import { clientRestApi } from '~/services/rest-api';
 import { desconnectedUrl } from '~/utils/constants';
 
 export default function Home({ courses, ...props }) {
@@ -18,7 +18,7 @@ export default function Home({ courses, ...props }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const meService = new MeServiceRest({ context });
+  const meService = clientRestApi({ context }).me();
   if (!meService.accessToken) {
     return {
       redirect: {
@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const courses = await meService.courses();
+  const courses = await meService.courses({}).findAll();
   return {
     props: {
       courses

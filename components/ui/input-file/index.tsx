@@ -14,6 +14,7 @@ export interface InputFileProps {
   readonly label?: string;
   readonly accept?: string;
   readonly modalTitle?: string;
+  readonly hidePreview?: boolean;
   readonly formats?: string[];
   readonly helperMessage?: string;
   readonly errorMessage?: string;
@@ -30,6 +31,7 @@ export const InputFile: React.FC<InputFileProps> = forwardRef(
       helperMessage,
       errorMessage,
       accept,
+      hidePreview = false,
       onChange,
       onPreview,
       previewElement,
@@ -90,7 +92,7 @@ export const InputFile: React.FC<InputFileProps> = forwardRef(
     }, [accept, formats]);
 
     return (
-      <FormControl id={props.id} marginBottom={2}>
+      <FormControl id={props.id}>
         {label && <FormLabel>{label}</FormLabel>}
 
         <Upload
@@ -103,7 +105,7 @@ export const InputFile: React.FC<InputFileProps> = forwardRef(
           onChange={handleChange}
           {...props}
         >
-          {previewUrl || fileName ? (
+          {hidePreview && (previewUrl || fileName) ? (
             <Flex padding={2} width="full">
               {previewElement ? previewElement(previewUrl) : fileName}
             </Flex>

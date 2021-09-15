@@ -9,6 +9,7 @@ import {
   FaBars,
   FaBell,
   FaChartLine,
+  FaCheck,
   FaChevronDown,
   FaChevronUp,
   FaCog,
@@ -30,6 +31,7 @@ import {
   FaSignOutAlt,
   FaSmile,
   FaStore,
+  FaTimes,
   FaUser,
   FaVideo
 } from 'react-icons/fa';
@@ -41,6 +43,9 @@ export const ContactIcon = PhoneOutlined;
 export const BankAccountIcon = BankOutlined;
 export const EmailIcon = FaEnvelope;
 export const SmileIcon = SmileOutlined;
+export const SuccessIcon = FaCheck;
+export const CloseIcon = FaTimes;
+export const ErrorIcon = FaTimes;
 export const UserIcon = FaUser;
 export const BackIcon = FaArrowLeft;
 export const MenuIcon = FaBars;

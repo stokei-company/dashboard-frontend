@@ -3,14 +3,16 @@ import React from 'react';
 import { Image } from '../image';
 import { InputFile, InputFileProps } from '../input-file';
 
-interface Props extends InputFileProps {
+export interface InputFileImageProps extends InputFileProps {
   readonly aspectRatio?: number;
   readonly rounded?: boolean;
+  readonly hidePreview?: boolean;
 }
 
-export const InputFileImage: React.FC<Props> = ({
+export const InputFileImage: React.FC<InputFileImageProps> = ({
   aspectRatio,
   rounded = false,
+  hidePreview = false,
   previewElement,
   ...props
 }) => {
@@ -27,6 +29,7 @@ export const InputFileImage: React.FC<Props> = ({
     >
       <InputFile
         accept="image/png, image/jpg, image/jpeg"
+        hidePreview={hidePreview}
         previewElement={(fileUrl: string) =>
           previewElement ? (
             previewElement(fileUrl)

@@ -1,6 +1,7 @@
 import { UserModel } from '~/services/@types/user';
 import { FindAllData } from '~/services/interfaces/find-all.data';
 import { FindAllPayload } from '~/services/interfaces/find-all.payload';
+import { convertObjectToParams } from '~/utils/convert-object-to-params';
 import { BaseService, BaseServiceConfig } from '../base-service';
 
 export interface CourseUserServiceConfig extends BaseServiceConfig {
@@ -16,14 +17,13 @@ export class CourseUserServiceRest extends BaseService {
 
   async findAll(data?: FindAllData): Promise<FindAllPayload<UserModel>> {
     try {
-      const params = Object.entries({ ...data?.filter, ...data }).map(
-        ([key, value]) => `${key}=${value || ''}`
-      );
-
-      const paramsString = params.join('&');
+      const params = convertObjectToParams({
+        ...(data || {}),
+        ...(data?.filter || {})
+      });
       const response = await this.client.get<FindAllPayload<UserModel>>(
         `/courses/${this.courseId}/users${
-          params.length > 0 ? '?' + paramsString : ''
+          params?.exists ? '?' + params.params : ''
         }`
       );
       if (response?.data) {

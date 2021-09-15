@@ -1,5 +1,6 @@
 import { SkuModel } from '~/services/@types/sku';
 import { FindAllPayload } from '~/services/interfaces/find-all.payload';
+import { convertObjectToParams } from '~/utils/convert-object-to-params';
 import { BaseService, BaseServiceConfig } from '../base-service';
 import { CreateCourseSkuDTO } from './dtos/create-course-sku.dto';
 
@@ -14,11 +15,16 @@ export class CourseSkuServiceRest extends BaseService {
     this.courseId = data.courseId;
   }
 
-  async create(data: CreateCourseSkuDTO): Promise<SkuModel> {
+  async create(data: CreateCourseSkuDTO | FormData): Promise<SkuModel> {
     try {
       const response = await this.client.post<SkuModel>(
         `/courses/${this.courseId}/skus`,
-        data
+        data,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
       );
       if (response?.data) {
         return response.data;
@@ -70,14 +76,10 @@ export class CourseSkuServiceRest extends BaseService {
     page?: number;
   }): Promise<FindAllPayload<SkuModel>> {
     try {
-      const params = Object.entries(data || {});
-      const queryParams: string = params
-        .map(([key, value]) => `${key}=${value || ''}`)
-        .join('&');
-
+      const params = convertObjectToParams(data);
       const response = await this.client.get<FindAllPayload<SkuModel>>(
         `/courses/${this.courseId}/skus${
-          params?.length > 0 ? '?' + queryParams : ''
+          params?.exists ? '?' + params.params : ''
         }`
       );
       if (response?.data) {

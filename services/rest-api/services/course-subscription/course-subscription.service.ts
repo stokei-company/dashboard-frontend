@@ -1,5 +1,6 @@
 import { SubscriptionModel } from '~/services/@types/subscription';
 import { FindAllPayload } from '~/services/interfaces/find-all.payload';
+import { convertObjectToParams } from '~/utils/convert-object-to-params';
 import { BaseService, BaseServiceConfig } from '../base-service';
 import { CreateCourseSubscriptionDTO } from './dtos/create-course-subscription.dto';
 
@@ -30,14 +31,14 @@ export class CourseSubscriptionServiceRest extends BaseService {
   async start(data: {
     subscriptionId: string;
     userId: string;
-  }): Promise<boolean> {
+  }): Promise<SubscriptionModel> {
     try {
-      const response = await this.client.patch<{ ok: boolean }>(
+      const response = await this.client.patch<SubscriptionModel>(
         `/courses/${this.courseId}/subscriptions/${data?.subscriptionId}/start`,
         data
       );
-      if (response?.data?.ok) {
-        return response?.data?.ok;
+      if (response?.data) {
+        return response?.data;
       }
     } catch (error) {}
     return null;
@@ -46,14 +47,14 @@ export class CourseSubscriptionServiceRest extends BaseService {
   async cancel(data: {
     subscriptionId: string;
     userId: string;
-  }): Promise<boolean> {
+  }): Promise<SubscriptionModel> {
     try {
-      const response = await this.client.patch<{ ok: boolean }>(
+      const response = await this.client.patch<SubscriptionModel>(
         `/courses/${this.courseId}/subscriptions/${data?.subscriptionId}/cancel`,
         data
       );
-      if (response?.data?.ok) {
-        return response?.data?.ok;
+      if (response?.data) {
+        return response?.data;
       }
     } catch (error) {}
     return null;
@@ -67,14 +68,10 @@ export class CourseSubscriptionServiceRest extends BaseService {
     createdAt?: string;
   }): Promise<FindAllPayload<SubscriptionModel>> {
     try {
-      const params = Object.entries(data || {}).map(
-        ([key, value]) => `${key}=${value || ''}`
-      );
-
-      const paramsString = params.join('&');
+      const params = convertObjectToParams(data);
       const response = await this.client.get<FindAllPayload<SubscriptionModel>>(
         `/courses/${this.courseId}/subscriptions${
-          params.length > 0 ? '?' + paramsString : ''
+          params?.exists ? '?' + params.params : ''
         }`
       );
       if (response?.data) {

@@ -48,7 +48,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const status = context?.query?.status ? context?.query?.status + '' : null;
+  const status = context?.query?.status ? context?.query?.status + '' : '';
   const subscriptions = await courseService
     .subscriptions({ courseId })
     .findAll({

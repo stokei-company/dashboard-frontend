@@ -1,5 +1,4 @@
 import { AUTH_FRONTEND_URL } from '~/environments';
-import { colors } from '~/styles/colors';
 
 export const SITE_NAME = 'Stokei';
 

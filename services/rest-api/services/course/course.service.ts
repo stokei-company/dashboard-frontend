@@ -30,27 +30,27 @@ import { UpdateCourseDTO } from './dtos/update-course.dto';
 export interface CourseServiceConfig extends BaseServiceConfig {}
 
 export class CourseServiceRest extends BaseService {
-  constructor(data: CourseServiceConfig) {
-    super(data);
+  constructor(config: CourseServiceConfig) {
+    super(config);
   }
 
   materials(config: CourseMaterialServiceConfig) {
-    return new CourseMaterialServiceRest(config);
+    return new CourseMaterialServiceRest({ ...this.baseConfig, ...config });
   }
   modules(config: CourseModuleServiceConfig) {
-    return new CourseModuleServiceRest(config);
+    return new CourseModuleServiceRest({ ...this.baseConfig, ...config });
   }
   videos(config: CourseVideoServiceConfig) {
-    return new CourseVideoServiceRest(config);
+    return new CourseVideoServiceRest({ ...this.baseConfig, ...config });
   }
   skus(config: CourseSkuServiceConfig) {
-    return new CourseSkuServiceRest(config);
+    return new CourseSkuServiceRest({ ...this.baseConfig, ...config });
   }
   users(config: CourseUserServiceConfig) {
-    return new CourseUserServiceRest(config);
+    return new CourseUserServiceRest({ ...this.baseConfig, ...config });
   }
   subscriptions(config: CourseSubscriptionServiceConfig) {
-    return new CourseSubscriptionServiceRest(config);
+    return new CourseSubscriptionServiceRest({ ...this.baseConfig, ...config });
   }
 
   async create(data: CreateCourseDTO | FormData): Promise<CourseModel> {

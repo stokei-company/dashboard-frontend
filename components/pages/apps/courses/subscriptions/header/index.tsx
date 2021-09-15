@@ -42,8 +42,9 @@ export const Header: React.FC<Props> = ({ title, onSuccess }) => {
         direction={['column', 'column', 'row', 'row']}
         spacing={[2, 2, 10, 10]}
       >
-        <Flex>
+        <Flex flexDir="row">
           <Select
+            minHeight="40px"
             onChange={handleStatus}
             defaultValue={router?.query?.status}
             borderRadius="full"

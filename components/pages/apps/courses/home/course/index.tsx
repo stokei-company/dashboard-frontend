@@ -18,8 +18,7 @@ export const Course: React.FC<Props> = memo(({ course, appId }) => {
   return (
     <Card
       title={course?.name}
-      headerImage={course?.imageUrl}
-      headerFallbackImage="/no-image.png"
+      headerImage={course?.imageUrl || '/no-image-course.png'}
       body={
         course?.teachers?.length > 0 && (
           <Flex width="full" flexDirection="column" paddingY={2}>

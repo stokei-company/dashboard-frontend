@@ -4,7 +4,6 @@ import { memo } from 'react';
 import { AppAvatar } from '~/components/ui/app-avatar';
 import { ButtonOutlined } from '~/components/ui/button';
 import { Card } from '~/components/ui/card';
-import { CourseAvatar } from '~/components/ui/course-avatar';
 import { UserAvatar } from '~/components/ui/user-avatar';
 import { CourseModel } from '~/services/@types/course';
 
@@ -17,7 +16,7 @@ export const Course: React.FC<Props> = memo(({ course }) => {
   return (
     <Card
       title={course?.name}
-      headerImage={course?.imageUrl}
+      headerImage={course?.imageUrl || '/no-image-course.png'}
       body={
         course?.teachers?.length > 0 && (
           <Flex width="full" flexDirection="column" paddingY={2}>
